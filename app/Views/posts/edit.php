@@ -14,8 +14,7 @@
 
                         <div class="mb-3">
                             <label for="content" class="form-label">Content *</label>
-                            <div id="editor" style="height: 400px; background: white;"></div>
-                            <textarea name="content" id="content" style="display:none;" required><?= htmlspecialchars($post['content']) ?></textarea>
+                            <textarea name="content" id="content" class="form-control" rows="15" required><?= htmlspecialchars($post['content'] ?? '') ?></textarea>
                             <small class="form-text text-muted">Use the toolbar to format your content</small>
                         </div>
 
@@ -31,15 +30,15 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Categories</label>
+                            <label class="form-label">Category</label>
                             <div class="row">
                                 <?php foreach ($categories as $category): ?>
                                 <div class="col-md-6">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" 
+                                        <input class="form-check-input" type="radio" 
                                                name="categories[]" value="<?= $category['id'] ?>"
                                                id="cat-<?= $category['id'] ?>"
-                                               <?= in_array($category['id'], $post['categories'] ?? []) ? 'checked' : '' ?>>
+                                               <?= ($post['category_id'] == $category['id']) ? 'checked' : '' ?>>
                                         <label class="form-check-label" for="cat-<?= $category['id'] ?>">
                                             <?= htmlspecialchars($category['name']) ?>
                                         </label>
@@ -82,38 +81,40 @@
     </div>
 </div>
 
-<!-- Quill Editor CSS -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<!-- Trumbowyg CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/ui/trumbowyg.min.css">
 
-<!-- Quill Editor JS -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<!-- Trumbowyg JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/trumbowyg.min.js"></script>
 <script>
-// Initialize Quill Editor with existing content
-var quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-        toolbar: [
-            [{ 'header': [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote', 'code-block'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'align': [] }],
-            ['link', 'image'],
-            ['clean']
+$(document).ready(function() {
+    console.log('Initializing Trumbowyg...');
+    console.log('jQuery version:', $.fn.jquery);
+    console.log('Content element:', $('#content').length);
+    
+    if (typeof $.fn.trumbowyg === 'undefined') {
+        console.error('Trumbowyg plugin not loaded!');
+        return;
+    }
+    
+    $('#content').trumbowyg({
+        btns: [
+            ['viewHTML'],
+            ['formatting'],
+            ['strong', 'em', 'del'],
+            ['superscript', 'subscript'],
+            ['link'],
+            ['insertImage'],
+            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+            ['unorderedList', 'orderedList'],
+            ['horizontalRule'],
+            ['removeformat'],
+            ['fullscreen']
         ]
-    },
-    placeholder: 'Write your post content here...'
+    });
+    
+    console.log('Trumbowyg initialized successfully');
 });
-
-// Load existing content
-var existingContent = document.querySelector('#content').value;
-if (existingContent) {
-    quill.root.innerHTML = existingContent;
-}
-
-// Update hidden textarea when form is submitted
-document.querySelector('form').onsubmit = function() {
-    var content = document.querySelector('#content');
-    content.value = quill.root.innerHTML;
-};
 </script>
+
+

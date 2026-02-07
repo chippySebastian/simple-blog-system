@@ -104,7 +104,7 @@ class PostController extends BaseController
     public function store()
     {
         AuthHelper::requireAuth();
-        
+    
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/posts/create');
         }
@@ -115,6 +115,9 @@ class PostController extends BaseController
         $featuredImage = $_POST['featured_image'] ?? '';
         $status = $_POST['status'] ?? 'draft';
         $categories = $_POST['categories'] ?? [];
+        
+        // Get first category (posts table only supports single category_id)
+        $categoryId = !empty($categories) ? intval($categories[0]) : null;
 
         $errors = [];
 
@@ -122,7 +125,9 @@ class PostController extends BaseController
             $errors[] = 'Title is required';
         }
 
-        if (empty($content)) {
+        // Check if content is empty or just contains empty HTML tags
+        $contentText = strip_tags($content);
+        if (empty($content) || empty(trim($contentText))) {
             $errors[] = 'Content is required';
         }
 
@@ -134,20 +139,20 @@ class PostController extends BaseController
         // Generate slug from title
         $slug = $this->generateSlug($title);
 
-        $post = $this->postService->create([
+        $postId = $this->postService->create([
             'title' => $title,
             'slug' => $slug,
             'content' => $content,
             'excerpt' => $excerpt ?: substr(strip_tags($content), 0, 150) . '...',
             'featured_image' => $featuredImage,
+            'category_id' => $categoryId,
             'user_id' => $this->getCurrentUserId(),
             'status' => $status,
-            'categories' => array_map('intval', $categories),
             'views' => 0
         ]);
 
         $this->setFlash('success', 'Post created successfully');
-        $this->redirect('/posts/' . $post['id']);
+        $this->redirect('/posts/' . $postId);
     }
 
     /**
@@ -214,7 +219,9 @@ class PostController extends BaseController
             $errors[] = 'Title is required';
         }
 
-        if (empty($content)) {
+        // Check if content is empty or just contains empty HTML tags
+        $contentText = strip_tags($content);
+        if (empty($content) || empty(trim($contentText))) {
             $errors[] = 'Content is required';
         }
 
@@ -224,6 +231,9 @@ class PostController extends BaseController
         }
 
         $slug = $this->generateSlug($title);
+        
+        // Get first category (posts table only supports single category_id)
+        $categoryId = !empty($categories) ? intval($categories[0]) : null;
 
         $this->postService->update($id, [
             'title' => $title,
@@ -231,8 +241,8 @@ class PostController extends BaseController
             'content' => $content,
             'excerpt' => $excerpt ?: substr(strip_tags($content), 0, 150) . '...',
             'featured_image' => $featuredImage,
-            'status' => $status,
-            'categories' => array_map('intval', $categories)
+            'category_id' => $categoryId,
+            'status' => $status
         ]);
 
         $this->setFlash('success', 'Post updated successfully');

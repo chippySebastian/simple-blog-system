@@ -78,8 +78,8 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <small class="text-muted">
                                         <i class="bi bi-person"></i>
-                                        <a href="/authors/<?= $post['author']['id'] ?>" class="text-decoration-none">
-                                            <?= htmlspecialchars($post['author']['name']) ?>
+                                        <a href="/authors/<?= $post['user_id'] ?>" class="text-decoration-none">
+                                            <?= htmlspecialchars($post['author_name']) ?>
                                         </a>
                                     </small>
                                     <small class="text-muted">

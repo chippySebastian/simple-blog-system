@@ -43,7 +43,7 @@
                     <div class="card-footer bg-transparent border-top-0">
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
-                                <i class="bi bi-person"></i> <?= htmlspecialchars($post['author']['name']) ?>
+                                <i class="bi bi-person"></i> <?= htmlspecialchars($post['author_name']) ?>
                             </small>
                             <small class="text-muted">
                                 <i class="bi bi-chat"></i> <?= $post['comment_count'] ?>

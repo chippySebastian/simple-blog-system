@@ -139,7 +139,7 @@
                                             <?= htmlspecialchars(substr($post['title'], 0, 40)) ?>
                                         </a>
                                     </td>
-                                    <td><?= htmlspecialchars($post['author']['name']) ?></td>
+                                    <td><?= htmlspecialchars($post['author_name']) ?></td>
                                     <td>
                                         <span class="badge bg-<?= $post['status'] === 'published' ? 'success' : 'warning' ?>">
                                             <?= $post['status'] ?>

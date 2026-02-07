@@ -9,13 +9,13 @@
                         <div class="mb-3 text-center">
                             <img src="<?= htmlspecialchars($user['avatar']) ?>" 
                                  class="rounded-circle mb-2" width="100" height="100"
-                                 alt="<?= htmlspecialchars($user['name']) ?>">
+                                 alt="<?= htmlspecialchars($user['full_name']) ?>">
                         </div>
 
                         <div class="mb-3">
                             <label for="name" class="form-label">Name *</label>
                             <input type="text" class="form-control" id="name" name="name" 
-                                   value="<?= htmlspecialchars($user['name']) ?>" required>
+                                   value="<?= htmlspecialchars($user['full_name']) ?>" required>
                         </div>
 
                         <div class="mb-3">

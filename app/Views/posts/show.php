@@ -19,13 +19,13 @@
                 <h1 class="mb-3"><?= htmlspecialchars($post['title']) ?></h1>
 
                 <div class="d-flex align-items-center mb-3">
-                    <img src="<?= htmlspecialchars($post['author']['avatar'] ?? '') ?>" 
+                    <img src="<?= htmlspecialchars($post['avatar'] ?? '') ?>" 
                          class="rounded-circle me-2" width="40" height="40"
-                         alt="<?= htmlspecialchars($post['author']['name']) ?>">
+                         alt="<?= htmlspecialchars($post['author_name']) ?>">
                     <div>
                         <div>
-                            <a href="/authors/<?= $post['author']['id'] ?>" class="text-decoration-none fw-bold">
-                                <?= htmlspecialchars($post['author']['name']) ?>
+                            <a href="/authors/<?= $post['user_id'] ?>" class="text-decoration-none fw-bold">
+                                <?= htmlspecialchars($post['author_name']) ?>
                             </a>
                         </div>
                         <small class="text-muted">

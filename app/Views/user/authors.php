@@ -8,10 +8,10 @@
                 <div class="card-body">
                     <img src="<?= htmlspecialchars($user['avatar']) ?>" 
                          class="rounded-circle mb-2" width="80" height="80"
-                         alt="<?= htmlspecialchars($user['name']) ?>">
+                         alt="<?= htmlspecialchars($user['full_name']) ?>">
                     <h5 class="card-title">
                         <a href="/authors/<?= $user['id'] ?>" class="text-decoration-none">
-                            <?= htmlspecialchars($user['name']) ?>
+                            <?= htmlspecialchars($user['full_name']) ?>
                         </a>
                     </h5>
                     <span class="badge bg-<?= $user['role'] === 'admin' ? 'danger' : 'primary' ?>">

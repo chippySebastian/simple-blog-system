@@ -25,7 +25,7 @@
                             <td>
                                 <img src="<?= htmlspecialchars($user['avatar']) ?>" 
                                      class="rounded-circle me-2" width="30" height="30">
-                                <?= htmlspecialchars($user['name']) ?>
+                                <?= htmlspecialchars($user['full_name']) ?>
                             </td>
                             <td><?= htmlspecialchars($user['email']) ?></td>
                             <td>

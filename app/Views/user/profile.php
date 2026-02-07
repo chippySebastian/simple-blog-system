@@ -5,8 +5,8 @@
                 <div class="card-body text-center">
                     <img src="<?= htmlspecialchars($user['avatar']) ?>" 
                          class="rounded-circle mb-3" width="120" height="120"
-                         alt="<?= htmlspecialchars($user['name']) ?>">
-                    <h2><?= htmlspecialchars($user['name']) ?></h2>
+                         alt="<?= htmlspecialchars($user['full_name']) ?>">
+                    <h2><?= htmlspecialchars($user['full_name']) ?></h2>
                     <p class="text-muted"><?= htmlspecialchars($user['email']) ?></p>
                     <?php if (isset($user['bio'])): ?>
                         <p><?= nl2br(htmlspecialchars($user['bio'])) ?></p>
@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <h3 class="mb-3">Posts by <?= htmlspecialchars($user['name']) ?></h3>
+            <h3 class="mb-3">Posts by <?= htmlspecialchars($user['full_name']) ?></h3>
             <?php if (empty($posts)): ?>
                 <div class="alert alert-info">No posts yet.</div>
             <?php else: ?>

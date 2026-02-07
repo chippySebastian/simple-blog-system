@@ -99,7 +99,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
                                data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle"></i> <?= htmlspecialchars($currentUser['name']) ?>
+                                <i class="bi bi-person-circle"></i> <?= htmlspecialchars($currentUser['full_name']) ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="/profile">My Profile</a></li>

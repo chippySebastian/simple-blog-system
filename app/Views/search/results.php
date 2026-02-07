@@ -40,8 +40,8 @@
                             <div>
                                 <small class="text-muted">
                                     <i class="bi bi-person"></i> 
-                                    <a href="/authors/<?= $post['author']['id'] ?>">
-                                        <?= htmlspecialchars($post['author']['name']) ?>
+                                    <a href="/authors/<?= $post['user_id'] ?>">
+                                        <?= htmlspecialchars($post['author_name']) ?>
                                     </a>
                                 </small>
                                 <small class="text-muted ms-2">

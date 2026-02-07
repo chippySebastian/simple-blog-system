@@ -9,7 +9,7 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Name *</label>
                             <input type="text" class="form-control" id="name" name="name" 
-                                   value="<?= htmlspecialchars($user['name']) ?>" required>
+                                   value="<?= htmlspecialchars($user['full_name']) ?>" required>
                         </div>
 
                         <div class="mb-3">

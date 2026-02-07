@@ -81,40 +81,17 @@
     </div>
 </div>
 
-<!-- Trumbowyg CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/ui/trumbowyg.min.css">
+<!-- Jodit Editor CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.5/jodit.min.css"/>
 
-<!-- Trumbowyg JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/trumbowyg.min.js"></script>
+<!-- Jodit Editor JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.5/jodit.min.js"></script>
 <script>
-$(document).ready(function() {
-    console.log('Initializing Trumbowyg...');
-    console.log('jQuery version:', $.fn.jquery);
-    console.log('Content element:', $('#content').length);
-    
-    if (typeof $.fn.trumbowyg === 'undefined') {
-        console.error('Trumbowyg plugin not loaded!');
-        return;
-    }
-    
-    $('#content').trumbowyg({
-        btns: [
-            ['viewHTML'],
-            ['formatting'],
-            ['strong', 'em', 'del'],
-            ['superscript', 'subscript'],
-            ['link'],
-            ['insertImage'],
-            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-            ['unorderedList', 'orderedList'],
-            ['horizontalRule'],
-            ['removeformat'],
-            ['fullscreen']
-        ]
+    const editor = Jodit.make('#content', {
+        height: 400,
+        buttons: 'bold,italic,underline,strikethrough,|,ul,ol,|,align,|,link,image,|,undo,redo,|,source'
     });
-    
-    console.log('Trumbowyg initialized successfully');
-});
+    console.log('Jodit editor initialized');
 </script>
 
 

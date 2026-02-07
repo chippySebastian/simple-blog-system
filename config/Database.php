@@ -6,14 +6,14 @@
  */
 
 return [
-    'driver' => 'mysql',
+    'driver' => 'pgsql',
     'host' => 'localhost',
-    'port' => 3306,
+    'port' => 5432,
     'database' => 'simple_blog_db',
-    'username' => 'root',
-    'password' => '',
-    'charset' => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci',
+    'username' => 'postgres',
+    'password' => 'root',
+    'charset' => 'utf8',
+    'schema' => 'public',
     'options' => [
         \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
         \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,

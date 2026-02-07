@@ -42,13 +42,24 @@ class Database
         try {
             $dbConfig = require BASE_PATH . '/config/Database.php';
             
-            $dsn = sprintf(
-                'mysql:host=%s;port=%d;dbname=%s;charset=%s',
-                $dbConfig['host'],
-                $dbConfig['port'],
-                $dbConfig['database'],
-                $dbConfig['charset']
-            );
+            // Build DSN based on driver
+            if ($dbConfig['driver'] === 'pgsql') {
+                $dsn = sprintf(
+                    'pgsql:host=%s;port=%d;dbname=%s;options=--client_encoding=%s',
+                    $dbConfig['host'],
+                    $dbConfig['port'],
+                    $dbConfig['database'],
+                    $dbConfig['charset']
+                );
+            } else {
+                $dsn = sprintf(
+                    'mysql:host=%s;port=%d;dbname=%s;charset=%s',
+                    $dbConfig['host'],
+                    $dbConfig['port'],
+                    $dbConfig['database'],
+                    $dbConfig['charset']
+                );
+            }
 
             $this->connection = new PDO(
                 $dsn,

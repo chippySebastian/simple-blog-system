@@ -38,6 +38,15 @@
   },
   "scripts": {
     "serve": "php -S localhost:8000 -t public/",
+    "migrate": "php migrate.php up",
+    "migrate:status": "php migrate.php status",
+    "migrate:rollback": "php migrate.php down",
+    "migrate:fresh": "php migrate.php fresh",
+    "db:seed": "php seed.php",
+    "db:setup": [
+      "@migrate:fresh",
+      "@db:seed"
+    ],
     "test": "phpunit",
     "test:unit": "phpunit --testsuite Unit",
     "test:integration": "phpunit --testsuite Integration",

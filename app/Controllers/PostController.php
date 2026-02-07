@@ -35,11 +35,9 @@ class PostController extends BaseController
     {
         $posts = $this->postService->getPublished();
         
-        // Add author info to each post
+        // Add comment count to each post (author info already included from JOIN)
         foreach ($posts as &$post) {
-            $post['author'] = $this->userService->find($post['author_id']);
-            $post['category_names'] = $this->getCategoryNames($post['categories'] ?? []);
-            $post['comment_count'] = count($this->commentService->getByPost($post['id']));
+            $post['comment_count'] = $this->commentService->countByPost($post['id']);
         }
 
         echo $this->render('posts.index', ['posts' => $posts]);
@@ -60,7 +58,7 @@ class PostController extends BaseController
         // Check if user can view this post
         if ($post['status'] !== 'published') {
             if (!$this->isAuthenticated() || 
-                ($this->getCurrentUserId() != $post['author_id'] && !$this->isAdmin())) {
+                ($this->getCurrentUserId() != $post['user_id'] && !$this->isAdmin())) {
                 $this->setFlash('error', 'Post not found');
                 $this->redirect('/posts');
             }
@@ -69,8 +67,7 @@ class PostController extends BaseController
         // Increment views
         $this->postService->incrementViews($id);
 
-        $post['author'] = $this->userService->find($post['author_id']);
-        $post['category_names'] = $this->getCategoryNames($post['categories'] ?? []);
+        // Author info already included from JOIN
         
         // Get comments
         $comments = $this->commentService->getByPost($id);
@@ -97,7 +94,7 @@ class PostController extends BaseController
     public function create()
     {
         AuthHelper::requireAuth();
-        $categories = $this->categoryService->all();
+        $categories = $this->categoryService->getAll();
         echo $this->render('posts.create', ['categories' => $categories]);
     }
 
@@ -143,7 +140,7 @@ class PostController extends BaseController
             'content' => $content,
             'excerpt' => $excerpt ?: substr(strip_tags($content), 0, 150) . '...',
             'featured_image' => $featuredImage,
-            'author_id' => $this->getCurrentUserId(),
+            'user_id' => $this->getCurrentUserId(),
             'status' => $status,
             'categories' => array_map('intval', $categories),
             'views' => 0
@@ -168,12 +165,12 @@ class PostController extends BaseController
         }
 
         // Check if user can edit this post
-        if ($post['author_id'] != $this->getCurrentUserId() && !$this->isAdmin()) {
+        if ($post['user_id'] != $this->getCurrentUserId() && !$this->isAdmin()) {
             $this->setFlash('error', 'You do not have permission to edit this post');
             $this->redirect('/posts/' . $id);
         }
 
-        $categories = $this->categoryService->all();
+        $categories = $this->categoryService->getAll();
         echo $this->render('posts.edit', [
             'post' => $post,
             'categories' => $categories
@@ -199,7 +196,7 @@ class PostController extends BaseController
         }
 
         // Check if user can edit this post
-        if ($post['author_id'] != $this->getCurrentUserId() && !$this->isAdmin()) {
+        if ($post['user_id'] != $this->getCurrentUserId() && !$this->isAdmin()) {
             $this->setFlash('error', 'You do not have permission to edit this post');
             $this->redirect('/posts/' . $id);
         }
@@ -257,7 +254,7 @@ class PostController extends BaseController
         }
 
         // Check if user can delete this post
-        if ($post['author_id'] != $this->getCurrentUserId() && !$this->isAdmin()) {
+        if ($post['user_id'] != $this->getCurrentUserId() && !$this->isAdmin()) {
             $this->setFlash('error', 'You do not have permission to delete this post');
             $this->redirect('/posts/' . $id);
         }

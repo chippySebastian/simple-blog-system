@@ -48,18 +48,16 @@ class SearchController extends BaseController
         }
 
         // Search in title, content
-        $results = $this->postService->search(['title', 'content', 'excerpt'], $query);
+        $results = $this->postService->search($query);
         
-        // Filter only published posts for non-admin
+        // Filter only published posts for non-admin  
         if (!$this->isAdmin()) {
             $results = array_filter($results, fn($p) => $p['status'] === 'published');
         }
 
-        // Add author info
+        // Add additional info (author info already included from JOIN)
         foreach ($results as &$result) {
-            $result['author'] = $this->userService->find($result['author_id']);
-            $result['category_names'] = $this->getCategoryNames($result['categories'] ?? []);
-            $result['comment_count'] = count($this->commentService->getByPost($result['id']));
+            $result['comment_count'] = $this->commentService->countByPost($result['id']);
             
             // Highlight search terms in title and excerpt
             $result['highlighted_title'] = $this->highlight($result['title'], $query);

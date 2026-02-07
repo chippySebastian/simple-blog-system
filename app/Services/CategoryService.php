@@ -2,60 +2,74 @@
 
 namespace App\Services;
 
+use App\Models\Category;
+
 /**
  * CategoryService
  * 
- * Service for managing categories with mock data
+ * Service for managing categories
  */
-class CategoryService extends MockDataService
+class CategoryService
 {
+    private $categoryModel;
+    
     public function __construct()
     {
-        $this->dataKey = 'categories';
-        $this->autoIncrementKey = 'categories_id';
-        parent::__construct();
-        $this->seedDefaultCategories();
+        $this->categoryModel = new Category();
     }
-
-    private function seedDefaultCategories()
+    
+    public function find($id)
     {
-        if (empty($_SESSION[$this->dataKey])) {
-            $this->create([
-                'name' => 'Programming',
-                'slug' => 'programming',
-                'description' => 'Articles about programming languages and concepts'
-            ]);
-
-            $this->create([
-                'name' => 'Web Development',
-                'slug' => 'web-development',
-                'description' => 'Web development tutorials and best practices'
-            ]);
-
-            $this->create([
-                'name' => 'Software Engineering',
-                'slug' => 'software-engineering',
-                'description' => 'Software engineering principles and methodologies'
-            ]);
-
-            $this->create([
-                'name' => 'Database',
-                'slug' => 'database',
-                'description' => 'Database design and management'
-            ]);
+        return $this->categoryModel->find($id);
+    }
+    
+    public function findBySlug($slug)
+    {
+        return $this->categoryModel->findBySlug($slug);
+    }
+    
+    public function getAll()
+    {
+        return $this->categoryModel->getAll('name', 'ASC');
+    }
+    
+    public function getWithPostCount()
+    {
+        return $this->categoryModel->getWithPostCount();
+    }
+    
+    public function getPosts($categoryId, $limit = null)
+    {
+        return $this->categoryModel->getPosts($categoryId, $limit);
+    }
+    
+    public function create($data)
+    {
+        // Generate slug if not provided
+        if (!isset($data['slug']) && isset($data['name'])) {
+            $data['slug'] = $this->generateSlug($data['name']);
         }
+        
+        return $this->categoryModel->create($data);
     }
-
-    public function getBySlug($slug)
+    
+    public function update($id, $data)
     {
-        $categories = $this->where('slug', $slug);
-        return !empty($categories) ? reset($categories) : null;
+        return $this->categoryModel->update($id, $data);
     }
-
-    public function getPostCount($categoryId)
+    
+    public function delete($id)
     {
-        $postService = new PostService();
-        $posts = $postService->getByCategory($categoryId);
-        return count($posts);
+        return $this->categoryModel->delete($id);
+    }
+    
+    public function count()
+    {
+        return $this->categoryModel->count();
+    }
+    
+    private function generateSlug($name)
+    {
+        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name), '-'));
     }
 }

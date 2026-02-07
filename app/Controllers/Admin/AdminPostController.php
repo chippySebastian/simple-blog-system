@@ -32,11 +32,8 @@ class AdminPostController extends BaseController
      */
     public function index()
     {
-        $posts = $this->postService->all();
-        
-        foreach ($posts as &$post) {
-            $post['author'] = $this->userService->find($post['author_id']);
-        }
+        // Posts already include author info from getAll if needed
+        $posts = $this->postService->getAll();
 
         echo $this->render('admin.posts.index', ['posts' => $posts]);
     }

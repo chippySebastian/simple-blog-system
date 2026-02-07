@@ -27,7 +27,7 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = $this->categoryService->all();
+        $categories = $this->categoryService->getAll();
         
         // Add post count to each category
         foreach ($categories as &$category) {

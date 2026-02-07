@@ -36,30 +36,27 @@ class AdminDashboardController extends BaseController
     public function index()
     {
         $stats = [
-            'total_posts' => count($this->postService->all()),
+            'total_posts' => count($this->postService->getAll()),
             'published_posts' => count($this->postService->getPublished()),
             'draft_posts' => count($this->postService->where('status', 'draft')),
-            'total_users' => count($this->userService->all()),
-            'total_comments' => count($this->commentService->all()),
+            'total_users' => count($this->userService->getAll()),
+            'total_comments' => count($this->commentService->getAll()),
             'pending_comments' => count($this->commentService->getByStatus('pending')),
-            'total_categories' => count($this->categoryService->all())
+            'total_categories' => count($this->categoryService->getAll())
         ];
 
-        // Recent posts
-        $recentPosts = array_slice($this->postService->all(), 0, 5);
-        foreach ($recentPosts as &$post) {
-            $post['author'] = $this->userService->find($post['author_id']);
-        }
+        // Recent posts (already includes author data from JOIN)
+        $recentPosts = array_slice($this->postService->getAll(), 0, 5);
 
         // Recent comments
-        $recentComments = array_slice($this->commentService->all(), 0, 5);
+        $recentComments = array_slice($this->commentService->getAll(), 0, 5);
         foreach ($recentComments as &$comment) {
             $comment['user'] = $this->userService->find($comment['user_id']);
             $comment['post'] = $this->postService->find($comment['post_id']);
         }
 
         // Recent users
-        $recentUsers = array_slice($this->userService->all(), 0, 5);
+        $recentUsers = array_slice($this->userService->getAll(), 0, 5);
 
         echo $this->render('admin.dashboard', [
             'stats' => $stats,

@@ -26,7 +26,7 @@ class AdminUserController extends BaseController
      */
     public function index()
     {
-        $users = $this->userService->all();
+        $users = $this->userService->getAll();
         echo $this->render('admin.users.index', ['users' => $users]);
     }
 

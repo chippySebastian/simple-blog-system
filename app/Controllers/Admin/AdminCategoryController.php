@@ -26,7 +26,7 @@ class AdminCategoryController extends BaseController
      */
     public function index()
     {
-        $categories = $this->categoryService->all();
+        $categories = $this->categoryService->getAll();
         
         foreach ($categories as &$category) {
             $category['post_count'] = $this->categoryService->getPostCount($category['id']);

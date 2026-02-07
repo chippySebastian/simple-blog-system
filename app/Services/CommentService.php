@@ -2,96 +2,89 @@
 
 namespace App\Services;
 
+use App\Models\Comment;
+
 /**
  * CommentService
  * 
- * Service for managing comments with mock data
+ * Service for managing comments
  */
-class CommentService extends MockDataService
+class CommentService
 {
+    private $commentModel;
+    
     public function __construct()
     {
-        $this->dataKey = 'comments';
-        $this->autoIncrementKey = 'comments_id';
-        parent::__construct();
-        $this->seedDefaultComments();
+        $this->commentModel = new Comment();
     }
-
-    private function seedDefaultComments()
+    
+    public function find($id)
     {
-        if (empty($_SESSION[$this->dataKey])) {
-            $this->create([
-                'post_id' => 1,
-                'user_id' => 2,
-                'parent_id' => null,
-                'content' => 'Great article! Very helpful for beginners.',
-                'status' => 'approved'
-            ]);
-
-            $this->create([
-                'post_id' => 1,
-                'user_id' => 3,
-                'parent_id' => null,
-                'content' => 'I learned a lot from this. Thanks for sharing!',
-                'status' => 'approved'
-            ]);
-
-            $this->create([
-                'post_id' => 1,
-                'user_id' => 1,
-                'parent_id' => 1,
-                'content' => 'Glad you found it helpful!',
-                'status' => 'approved'
-            ]);
-
-            $this->create([
-                'post_id' => 2,
-                'user_id' => 3,
-                'parent_id' => null,
-                'content' => 'The MVC pattern really helps organize code better.',
-                'status' => 'approved'
-            ]);
-
-            $this->create([
-                'post_id' => 3,
-                'user_id' => 2,
-                'parent_id' => null,
-                'content' => 'These tips are gold! Implementing them right away.',
-                'status' => 'pending'
-            ]);
-        }
+        return $this->commentModel->find($id);
     }
-
+    
+    public function getAll()
+    {
+        return $this->commentModel->getAll('created_at', 'DESC');
+    }
+    
     public function getByPost($postId, $status = 'approved')
     {
-        return array_filter($_SESSION[$this->dataKey], function ($comment) use ($postId, $status) {
-            return $comment['post_id'] == $postId && 
-                   ($status === 'all' || $comment['status'] === $status);
-        });
+        return $this->commentModel->getByPost($postId, $status);
     }
-
-    public function getReplies($parentId)
+    
+    public function getByUser($userId, $limit = null)
     {
-        return $this->where('parent_id', $parentId);
+        return $this->commentModel->getByUser($userId, $limit);
     }
-
-    public function getByStatus($status)
+    
+    public function getRecent($limit = 5)
     {
-        return $this->where('status', $status);
+        return $this->commentModel->getRecent($limit);
     }
-
+    
+    public function getPending($limit = null)
+    {
+        return $this->commentModel->getPending($limit);
+    }
+    
+    public function create($data)
+    {
+        // Set default status if not provided
+        if (!isset($data['status'])) {
+            $data['status'] = 'approved'; // or 'pending' for moderation
+        }
+        
+        return $this->commentModel->create($data);
+    }
+    
+    public function update($id, $data)
+    {
+        return $this->commentModel->update($id, $data);
+    }
+    
+    public function delete($id)
+    {
+        return $this->commentModel->delete($id);
+    }
+    
     public function approve($id)
     {
-        return $this->update($id, ['status' => 'approved']);
+        return $this->commentModel->approve($id);
     }
-
+    
     public function reject($id)
     {
-        return $this->update($id, ['status' => 'rejected']);
+        return $this->commentModel->reject($id);
     }
-
-    public function pending($id)
+    
+    public function countByPost($postId, $status = 'approved')
     {
-        return $this->update($id, ['status' => 'pending']);
+        return $this->commentModel->countByPost($postId, $status);
+    }
+    
+    public function count()
+    {
+        return $this->commentModel->count();
     }
 }

@@ -164,7 +164,7 @@ class UserController extends BaseController
      */
     public function authors()
     {
-        $users = $this->userService->all();
+        $users = $this->userService->getAll();
         echo $this->render('user.authors', ['users' => $users]);
     }
 }

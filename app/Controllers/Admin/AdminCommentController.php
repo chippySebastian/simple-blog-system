@@ -35,7 +35,7 @@ class AdminCommentController extends BaseController
         $status = $_GET['status'] ?? 'all';
         
         if ($status === 'all') {
-            $comments = $this->commentService->all();
+            $comments = $this->commentService->getAll();
         } else {
             $comments = $this->commentService->getByStatus($status);
         }

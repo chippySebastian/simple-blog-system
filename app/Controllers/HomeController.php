@@ -29,14 +29,10 @@ class HomeController extends BaseController
      */
     public function index()
     {
+        // Get recent posts (already includes author info from JOIN)
         $recentPosts = $this->postService->getPublished(6);
-        
-        // Add author info to each post
-        foreach ($recentPosts as &$post) {
-            $post['author'] = $this->userService->find($post['author_id']);
-        }
 
-        $categories = $this->categoryService->all();
+        $categories = $this->categoryService->getAll();
 
         echo $this->render('home', [
             'recentPosts' => $recentPosts,

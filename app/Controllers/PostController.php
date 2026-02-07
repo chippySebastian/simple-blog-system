@@ -84,7 +84,10 @@ class PostController extends BaseController
 
         echo $this->render('posts.show', [
             'post' => $post,
-            'comments' => array_filter($comments, fn($c) => $c['parent_id'] === null)
+            'comments' => array_filter($comments, fn($c) => $c['parent_id'] === null),
+            'isAuthenticated' => $this->isAuthenticated(),
+            'isAdmin' => $this->isAdmin(),
+            'getCurrentUserId' => fn() => $this->getCurrentUserId()
         ]);
     }
 

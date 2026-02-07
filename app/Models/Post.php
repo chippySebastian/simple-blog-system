@@ -7,19 +7,21 @@ namespace App\Models;
  */
 class Post extends BaseModel
 {
+    protected $table = 'posts';
+    
     /**
      * Get all posts (admin view)
      */
     public function getAll($orderBy = 'created_at', $direction = 'DESC')
     {
-        $sql = \"SELECT p.*, u.username, u.full_name as author_name, c.name as category_name
+        $sql = "SELECT p.*, u.username, u.full_name as author_name, c.name as category_name
                 FROM posts p
                 LEFT JOIN users u ON p.user_id = u.id
                 LEFT JOIN categories c ON p.category_id = c.id
-                ORDER BY p.{$orderBy} {$direction}\";
+                ORDER BY p.{$orderBy} {$direction}";
         
         $stmt = $this->query($sql);
-        return $stmt->fetchAll(\\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
     
     /**

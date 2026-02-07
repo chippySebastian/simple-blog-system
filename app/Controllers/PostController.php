@@ -140,7 +140,7 @@ class PostController extends BaseController
         }
 
         // Generate slug from title
-        $slug = $this->generateSlug($title);
+        $slug = $this->generateUniqueSlug($title);
 
         $postId = $this->postService->create([
             'title' => $title,
@@ -233,7 +233,7 @@ class PostController extends BaseController
             $this->redirect('/posts/' . $id . '/edit');
         }
 
-        $slug = $this->generateSlug($title);
+        $slug = $this->generateUniqueSlug($title, $id);
         
         // Get first category (posts table only supports single category_id)
         $categoryId = !empty($categories) ? intval($categories[0]) : null;
@@ -300,6 +300,32 @@ class PostController extends BaseController
     private function generateSlug($title)
     {
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-'));
+        return $slug;
+    }
+
+    /**
+     * Generate unique slug from title
+     */
+    private function generateUniqueSlug($title, $excludeId = null)
+    {
+        $baseSlug = $this->generateSlug($title);
+        $slug = $baseSlug;
+        $counter = 1;
+        
+        // Check if slug exists (excluding current post for updates)
+        while (true) {
+            $existingPost = $this->postService->findBySlug($slug);
+            
+            // If no post found, or if it's the current post being updated, slug is unique
+            if (!$existingPost || ($excludeId && $existingPost['id'] == $excludeId)) {
+                break;
+            }
+            
+            // Append counter and try again
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+        
         return $slug;
     }
 

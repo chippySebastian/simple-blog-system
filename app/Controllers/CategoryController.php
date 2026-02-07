@@ -27,12 +27,8 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = $this->categoryService->getAll();
-        
-        // Add post count to each category
-        foreach ($categories as &$category) {
-            $category['post_count'] = $this->categoryService->getPostCount($category['id']);
-        }
+        // Get categories with post count in a single query (more efficient)
+        $categories = $this->categoryService->getWithPostCount();
 
         echo $this->render('categories.index', ['categories' => $categories]);
     }

@@ -33,3 +33,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Test/debug files
+check_posts.php
+test_posts_controller.php
+verify_images.php
+update_images.php
+check.php

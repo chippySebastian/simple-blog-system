@@ -33,6 +33,16 @@ class Category extends BaseModel
     }
     
     /**
+     * Get post count for a category
+     */
+    public function getPostCount($categoryId)
+    {
+        $sql = "SELECT COUNT(*) FROM posts WHERE category_id = ? AND status = 'published'";
+        $stmt = $this->query($sql, [$categoryId]);
+        return (int) $stmt->fetchColumn();
+    }
+    
+    /**
      * Get category posts
      */
     public function getPosts($categoryId, $limit = null)

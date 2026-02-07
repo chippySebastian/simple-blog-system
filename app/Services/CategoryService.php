@@ -38,6 +38,11 @@ class CategoryService
         return $this->categoryModel->getWithPostCount();
     }
     
+    public function getPostCount($categoryId)
+    {
+        return $this->categoryModel->getPostCount($categoryId);
+    }
+    
     public function getPosts($categoryId, $limit = null)
     {
         return $this->categoryModel->getPosts($categoryId, $limit);

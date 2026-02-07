@@ -107,6 +107,22 @@ class Post extends BaseModel
     }
     
     /**
+     * Get posts by status
+     */
+    public function getByStatus($status)
+    {
+        $sql = "SELECT p.*, u.username, u.full_name as author_name, c.name as category_name
+                FROM posts p
+                LEFT JOIN users u ON p.user_id = u.id
+                LEFT JOIN categories c ON p.category_id = c.id
+                WHERE p.status = ?
+                ORDER BY p.created_at DESC";
+        
+        $stmt = $this->query($sql, [$status]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    
+    /**
      * Search posts
      */
     public function search($query, $limit = null)

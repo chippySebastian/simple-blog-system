@@ -17,10 +17,25 @@ class Comment extends BaseModel
         $sql = "SELECT c.*, u.username, u.full_name as author_name, u.avatar
                 FROM comments c
                 LEFT JOIN users u ON c.user_id = u.id
-                WHERE c.post_id = ? AND c.status = ?
+                WHERE c.post_id = ? AND c.status = ? AND c.parent_id IS NULL
                 ORDER BY c.created_at ASC";
         
         $stmt = $this->query($sql, [$postId, $status]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    
+    /**
+     * Get replies for a comment
+     */
+    public function getReplies($commentId, $status = 'approved')
+    {
+        $sql = "SELECT c.*, u.username, u.full_name as author_name, u.avatar
+                FROM comments c
+                LEFT JOIN users u ON c.user_id = u.id
+                WHERE c.parent_id = ? AND c.status = ?
+                ORDER BY c.created_at ASC";
+        
+        $stmt = $this->query($sql, [$commentId, $status]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
     
@@ -77,6 +92,26 @@ class Comment extends BaseModel
         }
         
         $stmt = $this->query($sql);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    
+    /**
+     * Get comments by status
+     */
+    public function getByStatus($status, $limit = null)
+    {
+        $sql = "SELECT c.*, u.username, u.full_name as author_name, p.title as post_title
+                FROM comments c
+                LEFT JOIN users u ON c.user_id = u.id
+                LEFT JOIN posts p ON c.post_id = p.id
+                WHERE c.status = ?
+                ORDER BY c.created_at DESC";
+        
+        if ($limit) {
+            $sql .= " LIMIT {$limit}";
+        }
+        
+        $stmt = $this->query($sql, [$status]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
     

@@ -33,6 +33,11 @@ class CommentService
         return $this->commentModel->getByPost($postId, $status);
     }
     
+    public function getReplies($commentId, $status = 'approved')
+    {
+        return $this->commentModel->getReplies($commentId, $status);
+    }
+    
     public function getByUser($userId, $limit = null)
     {
         return $this->commentModel->getByUser($userId, $limit);
@@ -46,6 +51,11 @@ class CommentService
     public function getPending($limit = null)
     {
         return $this->commentModel->getPending($limit);
+    }
+    
+    public function getByStatus($status, $limit = null)
+    {
+        return $this->commentModel->getByStatus($status, $limit);
     }
     
     public function create($data)

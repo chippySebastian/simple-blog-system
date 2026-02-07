@@ -38,7 +38,7 @@ class AdminDashboardController extends BaseController
         $stats = [
             'total_posts' => count($this->postService->getAll()),
             'published_posts' => count($this->postService->getPublished()),
-            'draft_posts' => count($this->postService->where('status', 'draft')),
+            'draft_posts' => count($this->postService->getByStatus('draft')),
             'total_users' => count($this->userService->getAll()),
             'total_comments' => count($this->commentService->getAll()),
             'pending_comments' => count($this->commentService->getByStatus('pending')),

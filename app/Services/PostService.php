@@ -48,6 +48,11 @@ class PostService
         return $this->postModel->getByUser($userId, $status, $limit);
     }
     
+    public function getByStatus($status)
+    {
+        return $this->postModel->getByStatus($status);
+    }
+    
     public function search($query, $limit = null)
     {
         return $this->postModel->search($query, $limit);

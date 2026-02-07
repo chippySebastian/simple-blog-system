@@ -34,7 +34,7 @@ class PostController extends BaseController
     public function index()
     {
         $posts = $this->postService->getPublished();
-        
+
         // Add comment count to each post (author info already included from JOIN)
         foreach ($posts as &$post) {
             $post['comment_count'] = $this->commentService->countByPost($post['id']);

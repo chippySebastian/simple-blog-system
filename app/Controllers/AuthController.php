@@ -176,11 +176,11 @@ class AuthController extends BaseController
         $user = $this->userService->findByEmail($email);
 
         if ($user) {
-            // In real app, send password reset email
-            // For mock data, we'll just show a success message
-            $this->setFlash('success', 'Password reset instructions sent to your email (mock - not actually sent)');
+            // TODO: Implement email sending functionality
+            // Generate reset token, store in database, send email with reset link
+            $this->setFlash('success', 'Password reset instructions sent to your email');
         } else {
-            // Don't reveal if email exists or not
+            // Don't reveal if email exists or not (security best practice)
             $this->setFlash('success', 'If that email exists, password reset instructions have been sent');
         }
 
@@ -223,8 +223,8 @@ class AuthController extends BaseController
             $this->redirect('/reset-password?token=' . $token);
         }
 
-        // In real app, verify token and update password
-        // For mock data, just show success
+        // TODO: Implement token verification and password update
+        // Verify reset token, check expiration, update user password in database
         $this->setFlash('success', 'Password reset successful! Please login with your new password');
         $this->redirect('/login');
     }

@@ -50,6 +50,20 @@ class AuthController extends BaseController
 
         $user = $this->userService->findByEmail($email);
 
+        // Debug login
+        error_log("=== LOGIN ATTEMPT ===");
+        error_log("Email: " . $email);
+        error_log("Password: '" . $password . "'");
+        if ($user) {
+            error_log("User found: YES");
+            error_log("Hash from DB: " . $user['password']);
+            $testResult = password_verify($password, $user['password']);
+            error_log("Verify result: " . ($testResult ? 'SUCCESS' : 'FAILED'));
+        } else {
+            error_log("User found: NO");
+        }
+        error_log("===================");
+
         if (!$user || !$this->userService->verifyPassword($user, $password)) {
             $this->setFlash('error', 'Invalid credentials');
             $this->redirect('/login');
@@ -130,16 +144,28 @@ class AuthController extends BaseController
             $counter++;
         }
 
-        // Create user
-        $user = $this->userService->create([
+        // Debug registration
+        error_log("=== REGISTRATION ===");
+        error_log("Email: " . $email);
+        error_log("Password from form: '" . $password . "'");
+        error_log("Password length: " . strlen($password));
+        error_log("Confirm password: '" . $confirmPassword . "'");
+        error_log("Passwords match: " . ($password === $confirmPassword ? 'YES' : 'NO'));
+        error_log("===================");
+
+        // Create user (UserService will hash the password)
+        $userId = $this->userService->create([
             'username' => $username,
             'full_name' => $name,
             'email' => $email,
-            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'password' => $password,  // Pass plain password - service will hash it
             'role' => 'user',
             'email_verified' => true, // Auto-verify for demo (in production, send email)
             'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&background=random'
         ]);
+
+        // Fetch the created user for login
+        $user = $this->userService->find($userId);
 
         AuthHelper::login($user);
         $this->setFlash('success', 'Registration successful! Welcome, ' . $name . '!');

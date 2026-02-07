@@ -36,7 +36,8 @@ class HomeController extends BaseController
 
         echo $this->render('home', [
             'recentPosts' => $recentPosts,
-            'categories' => $categories
+            'categories' => $categories,
+            'isAuthenticated' => $this->isAuthenticated()
         ]);
     }
 

@@ -23,8 +23,12 @@
                         <tr>
                             <td><?= $user['id'] ?></td>
                             <td>
-                                <img src="<?= htmlspecialchars($user['avatar']) ?>" 
-                                     class="rounded-circle me-2" width="30" height="30">
+                                <?php 
+                                $avatar = $user['avatar'] ?: 'https://ui-avatars.com/api/?name=' . urlencode($user['full_name']) . '&background=random';
+                                ?>
+                                <img src="<?= htmlspecialchars($avatar) ?>" 
+                                     class="rounded-circle me-2" width="30" height="30"
+                                     alt="<?= htmlspecialchars($user['full_name']) ?>">
                                 <?= htmlspecialchars($user['full_name']) ?>
                             </td>
                             <td><?= htmlspecialchars($user['email']) ?></td>
@@ -45,7 +49,7 @@
                                 <a href="/admin/users/<?= $user['id'] ?>/edit" class="btn btn-sm btn-outline-primary">
                                     <i class="bi bi-pencil"></i> Edit
                                 </a>
-                                <?php if ($user['id'] != $getCurrentUserId()): ?>
+                                <?php if ($user['id'] != current_user_id()): ?>
                                 <form method="POST" action="/admin/users/<?= $user['id'] ?>/delete" 
                                       class="d-inline" onsubmit="return confirm('Delete this user?')">
                                     <button type="submit" class="btn btn-sm btn-outline-danger">

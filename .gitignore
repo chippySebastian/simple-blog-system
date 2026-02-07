@@ -40,3 +40,4 @@ test_posts_controller.php
 verify_images.php
 update_images.php
 check.php
+check_users.php

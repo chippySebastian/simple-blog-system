@@ -13,8 +13,9 @@
 
                         <div class="mb-3">
                             <label for="content" class="form-label">Content *</label>
-                            <textarea class="form-control" id="content" name="content" rows="15" required></textarea>
-                            <small class="form-text text-muted">You can use HTML tags for formatting</small>
+                            <div id="editor" style="height: 400px; background: white;"></div>
+                            <textarea name="content" id="content" style="display:none;" required></textarea>
+                            <small class="form-text text-muted">Use the toolbar to format your content</small>
                         </div>
 
                         <div class="mb-3">
@@ -78,22 +79,32 @@
     </div>
 </div>
 
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- Quill Editor CSS -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<!-- Quill Editor JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-// Initialize TinyMCE (Rich Text Editor)
-tinymce.init({
-    selector: '#content',
-    height: 400,
-    menubar: false,
-    plugins: [
-        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-    ],
-    toolbar: 'undo redo | blocks | ' +
-        'bold italic forecolor | alignleft aligncenter ' +
-        'alignright alignjustify | bullist numlist outdent indent | ' +
-        'removeformat | help',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+// Initialize Quill Editor
+var quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'align': [] }],
+            ['link', 'image'],
+            ['clean']
+        ]
+    },
+    placeholder: 'Write your post content here...'
 });
+
+// Update hidden textarea when form is submitted
+document.querySelector('form').onsubmit = function() {
+    var content = document.querySelector('#content');
+    content.value = quill.root.innerHTML;
+};
 </script>

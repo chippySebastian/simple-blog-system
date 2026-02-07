@@ -88,10 +88,10 @@ class AdminUserController extends BaseController
         }
 
         $this->userService->update($id, [
-            'name' => $name,
+            'full_name' => $name,
             'email' => $email,
             'role' => $role,
-            'verified' => $verified
+            'email_verified' => $verified
         ]);
 
         $this->setFlash('success', 'User updated successfully');

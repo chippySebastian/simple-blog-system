@@ -34,7 +34,7 @@
                                 </span>
                             </td>
                             <td>
-                                <?php if ($user['verified']): ?>
+                                <?php if ($user['email_verified']): ?>
                                     <span class="badge bg-success">Yes</span>
                                 <?php else: ?>
                                     <span class="badge bg-warning">No</span>

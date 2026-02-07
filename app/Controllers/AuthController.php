@@ -55,13 +55,13 @@ class AuthController extends BaseController
             $this->redirect('/login');
         }
 
-        if (!$user['verified']) {
+        if (!$user['email_verified']) {
             $this->setFlash('error', 'Please verify your email before logging in');
             $this->redirect('/login');
         }
 
         AuthHelper::login($user);
-        $this->setFlash('success', 'Welcome back, ' . $user['name'] . '!');
+        $this->setFlash('success', 'Welcome back, ' . $user['full_name'] . '!');
         $this->redirect('/');
     }
 
@@ -120,12 +120,14 @@ class AuthController extends BaseController
         }
 
         // Create user
+        $username = strtolower(str_replace(' ', '_', $name));
         $user = $this->userService->create([
-            'name' => $name,
+            'username' => $username,
+            'full_name' => $name,
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT),
             'role' => 'user',
-            'verified' => true, // Auto-verify for mock data (in real app, send email)
+            'email_verified' => true, // Auto-verify for demo (in production, send email)
             'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&background=random'
         ]);
 

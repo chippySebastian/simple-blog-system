@@ -50,20 +50,6 @@ class AuthController extends BaseController
 
         $user = $this->userService->findByEmail($email);
 
-        // Debug login
-        error_log("=== LOGIN ATTEMPT ===");
-        error_log("Email: " . $email);
-        error_log("Password: '" . $password . "'");
-        if ($user) {
-            error_log("User found: YES");
-            error_log("Hash from DB: " . $user['password']);
-            $testResult = password_verify($password, $user['password']);
-            error_log("Verify result: " . ($testResult ? 'SUCCESS' : 'FAILED'));
-        } else {
-            error_log("User found: NO");
-        }
-        error_log("===================");
-
         if (!$user || !$this->userService->verifyPassword($user, $password)) {
             $this->setFlash('error', 'Invalid credentials');
             $this->redirect('/login');
@@ -143,15 +129,6 @@ class AuthController extends BaseController
             $username = $baseUsername . $counter;
             $counter++;
         }
-
-        // Debug registration
-        error_log("=== REGISTRATION ===");
-        error_log("Email: " . $email);
-        error_log("Password from form: '" . $password . "'");
-        error_log("Password length: " . strlen($password));
-        error_log("Confirm password: '" . $confirmPassword . "'");
-        error_log("Passwords match: " . ($password === $confirmPassword ? 'YES' : 'NO'));
-        error_log("===================");
 
         // Create user (UserService will hash the password)
         $userId = $this->userService->create([

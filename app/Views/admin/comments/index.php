@@ -43,10 +43,10 @@
                             <?php foreach ($comments as $comment): ?>
                             <tr>
                                 <td><?= $comment['id'] ?></td>
-                                <td><?= htmlspecialchars($comment['user']['name']) ?></td>
+                                <td><?= htmlspecialchars($comment['user']['full_name'] ?? 'Unknown User') ?></td>
                                 <td>
                                     <a href="/posts/<?= $comment['post']['id'] ?>">
-                                        <?= htmlspecialchars(substr($comment['post']['title'], 0, 30)) ?>...
+                                        <?= htmlspecialchars(substr($comment['post']['title'] ?? 'Unknown', 0, 30)) ?>...
                                     </a>
                                 </td>
                                 <td><?= htmlspecialchars(substr($comment['content'], 0, 50)) ?>...</td>

@@ -21,11 +21,11 @@
                 <div class="d-flex align-items-center mb-3">
                     <img src="<?= htmlspecialchars($post['avatar'] ?? '') ?>" 
                          class="rounded-circle me-2" width="40" height="40"
-                         alt="<?= htmlspecialchars($post['author_name']) ?>">
+                         alt="<?= htmlspecialchars($post['full_name'] ?? 'Author') ?>">
                     <div>
                         <div>
                             <a href="/authors/<?= $post['user_id'] ?>" class="text-decoration-none fw-bold">
-                                <?= htmlspecialchars($post['author_name']) ?>
+                                <?= htmlspecialchars($post['full_name'] ?? 'Unknown Author') ?>
                             </a>
                         </div>
                         <small class="text-muted">
@@ -43,7 +43,7 @@
                 </div>
                 <?php endif; ?>
 
-                <?php if ($isAuthenticated && ($getCurrentUserId() == $post['author_id'] || $isAdmin)): ?>
+                <?php if ($isAuthenticated && ($getCurrentUserId() == $post['user_id'] || $isAdmin)): ?>
                 <div class="mb-3">
                     <a href="/posts/<?= $post['id'] ?>/edit" class="btn btn-sm btn-outline-primary">
                         <i class="bi bi-pencil"></i> Edit
@@ -101,10 +101,10 @@
                         <div class="d-flex align-items-start mb-2">
                             <img src="<?= htmlspecialchars($comment['user']['avatar'] ?? '') ?>" 
                                  class="rounded-circle me-2" width="40" height="40"
-                                 alt="<?= htmlspecialchars($comment['user']['name']) ?>">
+                                 alt="<?= htmlspecialchars($comment['user']['full_name'] ?? 'User') ?>">
                             <div class="flex-grow-1">
                                 <div class="d-flex justify-content-between">
-                                    <strong><?= htmlspecialchars($comment['user']['name']) ?></strong>
+                                    <strong><?= htmlspecialchars($comment['user']['full_name'] ?? 'Unknown User') ?></strong>
                                     <small class="text-muted">
                                         <?= date('M d, Y H:i', strtotime($comment['created_at'])) ?>
                                     </small>
@@ -131,10 +131,10 @@
                                         <div class="d-flex align-items-start">
                                             <img src="<?= htmlspecialchars($reply['user']['avatar'] ?? '') ?>" 
                                                  class="rounded-circle me-2" width="30" height="30"
-                                                 alt="<?= htmlspecialchars($reply['user']['name']) ?>">
+                                                 alt="<?= htmlspecialchars($reply['user']['full_name'] ?? 'User') ?>">
                                             <div class="flex-grow-1">
                                                 <div class="d-flex justify-content-between">
-                                                    <strong><?= htmlspecialchars($reply['user']['name']) ?></strong>
+                                                    <strong><?= htmlspecialchars($reply['user']['full_name'] ?? 'Unknown User') ?></strong>
                                                     <small class="text-muted">
                                                         <?= date('M d, Y H:i', strtotime($reply['created_at'])) ?>
                                                     </small>

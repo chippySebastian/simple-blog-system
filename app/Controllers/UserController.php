@@ -98,7 +98,7 @@ class UserController extends BaseController
         }
 
         $this->userService->update($userId, [
-            'name' => $name,
+            'full_name' => $name,
             'email' => $email,
             'bio' => $bio,
             'avatar' => $avatar ?: 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&background=random'

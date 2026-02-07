@@ -119,8 +119,18 @@ class AuthController extends BaseController
             $this->redirect('/register');
         }
 
+        // Create unique username
+        $baseUsername = strtolower(str_replace(' ', '_', $name));
+        $username = $baseUsername;
+        $counter = 1;
+        
+        // Keep checking until we find a unique username
+        while ($this->userService->findByUsername($username)) {
+            $username = $baseUsername . $counter;
+            $counter++;
+        }
+
         // Create user
-        $username = strtolower(str_replace(' ', '_', $name));
         $user = $this->userService->create([
             'username' => $username,
             'full_name' => $name,

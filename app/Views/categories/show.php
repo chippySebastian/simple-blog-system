@@ -15,7 +15,7 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card post-card h-100 shadow-sm">
                     <?php if (!empty($post['featured_image'])): ?>
-                    <img src="<?= htmlspecialchars($post['featured_image']) ?>" 
+                    <img src="/images/thumbnail/<?= htmlspecialchars($post['featured_image']) ?>" 
                          class="card-img-top featured-image" 
                          alt="<?= htmlspecialchars($post['title']) ?>">
                     <?php endif; ?>

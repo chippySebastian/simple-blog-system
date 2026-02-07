@@ -5,7 +5,7 @@
             
             <div class="card shadow">
                 <div class="card-body">
-                    <form method="POST" action="/posts/store">
+                    <form method="POST" action="/posts/store" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title *</label>
                             <input type="text" class="form-control" id="title" name="title" required>
@@ -24,9 +24,16 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="featured_image" class="form-label">Featured Image URL</label>
-                            <input type="url" class="form-control" id="featured_image" name="featured_image"
-                                   placeholder="https://example.com/image.jpg">
+                            <label for="featured_image_file" class="form-label">Featured Image</label>
+                            <input type="file" class="form-control" id="featured_image_file" name="featured_image_file"
+                                   accept="image/jpeg,image/jpg,image/png,image/gif,image/webp">
+                            <small class="form-text text-muted">Upload an image (max 5MB, formats: JPG, PNG, GIF, WebP)</small>
+                            <div id="image-preview" class="mt-2" style="display: none;">
+                                <img id="preview-img" src="" alt="Image preview" class="img-thumbnail" style="max-width: 300px;">
+                                <button type="button" class="btn btn-sm btn-danger mt-2" id="remove-image">
+                                    <i class="bi bi-trash"></i> Remove
+                                </button>
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -89,6 +96,47 @@
         buttons: 'bold,italic,underline,strikethrough,|,ul,ol,|,align,|,link,image,|,undo,redo,|,source'
     });
     console.log('Jodit editor initialized');
+    
+    // Image upload preview
+    const fileInput = document.getElementById('featured_image_file');
+    const imagePreview = document.getElementById('image-preview');
+    const previewImg = document.getElementById('preview-img');
+    const removeBtn = document.getElementById('remove-image');
+    
+    // Preview uploaded file
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size exceeds 5MB limit');
+                fileInput.value = '';
+                return;
+            }
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert('Invalid file type. Please upload JPG, PNG, GIF, or WebP');
+                fileInput.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Remove image preview
+    removeBtn.addEventListener('click', function() {
+        fileInput.value = '';
+        previewImg.src = '';
+        imagePreview.style.display = 'none';
+    });
 </script>
 
 

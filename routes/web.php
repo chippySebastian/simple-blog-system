@@ -19,6 +19,7 @@ use App\Controllers\Admin\AdminUserController;
 use App\Controllers\Admin\AdminPostController;
 use App\Controllers\Admin\AdminCategoryController;
 use App\Controllers\Admin\AdminCommentController;
+use App\Controllers\ImageController;
 
 $router = new Router();
 
@@ -30,6 +31,12 @@ $router = new Router();
 $router->get('/', function () {
     $controller = new HomeController();
     $controller->index();
+});
+
+// Image serving (must be before other routes to avoid conflicts)
+$router->get('/images/{size}/{filename}', function ($size, $filename) {
+    $controller = new ImageController();
+    $controller->serve($size, $filename);
 });
 
 // ============================================

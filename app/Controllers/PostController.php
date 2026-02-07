@@ -6,6 +6,7 @@ use App\Services\PostService;
 use App\Services\CategoryService;
 use App\Services\CommentService;
 use App\Services\UserService;
+use App\Services\ImageUploadService;
 use App\Helpers\AuthHelper;
 
 /**
@@ -19,6 +20,7 @@ class PostController extends BaseController
     private $categoryService;
     private $commentService;
     private $userService;
+    private $imageService;
 
     public function __construct()
     {
@@ -26,6 +28,7 @@ class PostController extends BaseController
         $this->categoryService = new CategoryService();
         $this->commentService = new CommentService();
         $this->userService = new UserService();
+        $this->imageService = new ImageUploadService();
     }
 
     /**
@@ -115,7 +118,6 @@ class PostController extends BaseController
         $title = $_POST['title'] ?? '';
         $content = $_POST['content'] ?? '';
         $excerpt = $_POST['excerpt'] ?? '';
-        $featuredImage = $_POST['featured_image'] ?? '';
         $status = $_POST['status'] ?? 'draft';
         $categories = $_POST['categories'] ?? [];
         
@@ -132,6 +134,18 @@ class PostController extends BaseController
         $contentText = strip_tags($content);
         if (empty($content) || empty(trim($contentText))) {
             $errors[] = 'Content is required';
+        }
+        
+        // Handle image upload
+        $featuredImage = '';
+        if (isset($_FILES['featured_image_file']) && $_FILES['featured_image_file']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $uploadResult = $this->imageService->upload($_FILES['featured_image_file']);
+            
+            if ($uploadResult['success']) {
+                $featuredImage = $uploadResult['filename'];
+            } else {
+                $errors[] = $uploadResult['error'];
+            }
         }
 
         if (!empty($errors)) {
@@ -212,9 +226,10 @@ class PostController extends BaseController
         $title = $_POST['title'] ?? '';
         $content = $_POST['content'] ?? '';
         $excerpt = $_POST['excerpt'] ?? '';
-        $featuredImage = $_POST['featured_image'] ?? '';
         $status = $_POST['status'] ?? 'draft';
         $categories = $_POST['categories'] ?? [];
+        $existingImage = $_POST['existing_image'] ?? '';
+        $deleteImage = isset($_POST['delete_image']) && $_POST['delete_image'] == '1';
 
         $errors = [];
 
@@ -226,6 +241,31 @@ class PostController extends BaseController
         $contentText = strip_tags($content);
         if (empty($content) || empty(trim($contentText))) {
             $errors[] = 'Content is required';
+        }
+        
+        // Handle image management
+        $featuredImage = $existingImage; // Keep existing by default
+        
+        // Check if user wants to delete current image
+        if ($deleteImage && !empty($existingImage)) {
+            $this->imageService->delete($existingImage);
+            $featuredImage = '';
+        }
+        
+        // Handle new file upload
+        if (isset($_FILES['featured_image_file']) && $_FILES['featured_image_file']['error'] !== UPLOAD_ERR_NO_FILE) {
+            // Delete old image
+            if (!empty($existingImage)) {
+                $this->imageService->delete($existingImage);
+            }
+            
+            $uploadResult = $this->imageService->upload($_FILES['featured_image_file']);
+            
+            if ($uploadResult['success']) {
+                $featuredImage = $uploadResult['filename'];
+            } else {
+                $errors[] = $uploadResult['error'];
+            }
         }
 
         if (!empty($errors)) {
@@ -270,6 +310,11 @@ class PostController extends BaseController
         if ($post['user_id'] != $this->getCurrentUserId() && !$this->isAdmin()) {
             $this->setFlash('error', 'You do not have permission to delete this post');
             $this->redirect('/posts/' . $id);
+        }
+
+        // Delete associated image
+        if (!empty($post['featured_image'])) {
+            $this->imageService->delete($post['featured_image']);
         }
 
         $this->postService->delete($id);

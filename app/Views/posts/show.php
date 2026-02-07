@@ -10,7 +10,7 @@
                 <?php endif; ?>
 
                 <?php if (!empty($post['featured_image'])): ?>
-                <img src="<?= htmlspecialchars($post['featured_image']) ?>" 
+                <img src="/images/medium/<?= htmlspecialchars($post['featured_image']) ?>" 
                      class="img-fluid rounded mb-4 w-100" 
                      style="max-height: 400px; object-fit: cover;"
                      alt="<?= htmlspecialchars($post['title']) ?>">

@@ -114,7 +114,8 @@ class Router
      */
     private function matchPath($routePath, &$params = [])
     {
-        $routePattern = preg_replace('/\{[a-z_]+\}/', '([a-zA-Z0-9_-]+)', $routePath);
+        // Updated regex to include dots for file extensions
+        $routePattern = preg_replace('/\{[a-z_]+\}/', '([a-zA-Z0-9_.-]+)', $routePath);
         $routePattern = '#^' . $routePattern . '$#';
         
         if (preg_match($routePattern, $this->currentPath, $matches)) {

@@ -41,20 +41,20 @@
                                 <small class="text-muted">
                                     <i class="bi bi-person"></i> 
                                     <a href="/authors/<?= $post['user_id'] ?>">
-                                        <?= htmlspecialchars($post['author_name']) ?>
+                                        <?= htmlspecialchars($post['author_name'] ?? 'Unknown Author') ?>
                                     </a>
                                 </small>
                                 <small class="text-muted ms-2">
                                     <i class="bi bi-calendar"></i> <?= date('M d, Y', strtotime($post['created_at'])) ?>
                                 </small>
                                 <small class="text-muted ms-2">
-                                    <i class="bi bi-chat"></i> <?= $post['comment_count'] ?> comments
+                                    <i class="bi bi-chat"></i> <?= $post['comment_count'] ?? 0 ?> comments
                                 </small>
                             </div>
                             <div>
-                                <?php foreach ($post['category_names'] as $catName): ?>
-                                    <span class="badge bg-secondary"><?= htmlspecialchars($catName) ?></span>
-                                <?php endforeach; ?>
+                                <?php if (!empty($post['category_name'])): ?>
+                                    <span class="badge bg-secondary"><?= htmlspecialchars($post['category_name']) ?></span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

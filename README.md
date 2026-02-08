@@ -284,8 +284,6 @@ composer lint:fix          # Fix code style
 composer analyze           # Static analysis with PHPStan
 
 # Utilities
-php check.php              # System health check
-php status.php             # Application status
 composer install           # Install dependencies
 composer update            # Update dependencies
 ```
@@ -325,8 +323,6 @@ composer update            # Update dependencies
 **"Database 'simple_blog_db' does not exist"**
 - Create database first, then run migrations
 - Or use `composer db:setup` to create everything
-
-For more issues, run: `php check.php`
 
 
 

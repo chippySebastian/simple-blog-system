@@ -35,6 +35,8 @@ class AuthController extends BaseController
      */
     public function login()
     {
+        \App\Helpers\CsrfHelper::validate();
+        
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/login');
         }
@@ -81,6 +83,8 @@ class AuthController extends BaseController
      */
     public function register()
     {
+        \App\Helpers\CsrfHelper::validate();
+        
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/register');
         }
@@ -175,6 +179,8 @@ class AuthController extends BaseController
      */
     public function forgotPassword()
     {
+        \App\Helpers\CsrfHelper::validate();
+        
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/forgot-password');
         }
@@ -218,6 +224,8 @@ class AuthController extends BaseController
      */
     public function resetPassword()
     {
+        \App\Helpers\CsrfHelper::validate();
+        
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/reset-password');
         }

@@ -6,6 +6,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <form method="POST" action="/profile/update">
+                        <?= \App\Helpers\CsrfHelper::field() ?>
                         <div class="mb-3 text-center">
                             <img src="<?= htmlspecialchars($user['avatar']) ?>" 
                                  class="rounded-circle mb-2" width="100" height="100"

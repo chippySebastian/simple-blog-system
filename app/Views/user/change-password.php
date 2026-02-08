@@ -6,6 +6,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <form method="POST" action="/profile/change-password">
+                        <?= \App\Helpers\CsrfHelper::field() ?>
                         <div class="mb-3">
                             <label for="current_password" class="form-label">Current Password *</label>
                             <input type="password" class="form-control" id="current_password" 

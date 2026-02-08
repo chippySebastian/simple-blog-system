@@ -28,6 +28,7 @@ class CommentController extends BaseController
     public function store()
     {
         AuthHelper::requireAuth();
+        \App\Helpers\CsrfHelper::validate();
         
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/');
@@ -66,6 +67,7 @@ class CommentController extends BaseController
     public function update($id)
     {
         AuthHelper::requireAuth();
+        \App\Helpers\CsrfHelper::validate();
         
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/');
@@ -105,6 +107,7 @@ class CommentController extends BaseController
     public function delete($id)
     {
         AuthHelper::requireAuth();
+        \App\Helpers\CsrfHelper::validate();
         
         $comment = $this->commentService->find($id);
 

@@ -7,6 +7,7 @@
                 </div>
                 <div class="card-body">
                     <form method="POST" action="/reset-password">
+                        <?= \App\Helpers\CsrfHelper::field() ?>
                         <input type="hidden" name="token" value="<?= htmlspecialchars($token ?? '') ?>">
                         <div class="mb-3">
                             <label for="password" class="form-label">New Password</label>

@@ -65,6 +65,7 @@ class UserController extends BaseController
     public function updateProfile()
     {
         AuthHelper::requireAuth();
+        \App\Helpers\CsrfHelper::validate();
         
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/profile/edit');
@@ -127,6 +128,7 @@ class UserController extends BaseController
     public function changePassword()
     {
         AuthHelper::requireAuth();
+        \App\Helpers\CsrfHelper::validate();
         
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/profile/change-password');

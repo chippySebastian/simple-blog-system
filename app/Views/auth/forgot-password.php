@@ -8,6 +8,7 @@
                 <div class="card-body">
                     <p>Enter your email address and we'll send you instructions to reset your password.</p>
                     <form method="POST" action="/forgot-password">
+                        <?= \App\Helpers\CsrfHelper::field() ?>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>

@@ -50,6 +50,7 @@
                     </a>
                     <form method="POST" action="/posts/<?= $post['id'] ?>/delete" class="d-inline" 
                           onsubmit="return confirm('Are you sure you want to delete this post?')">
+                        <?= \App\Helpers\CsrfHelper::field() ?>
                         <button type="submit" class="btn btn-sm btn-outline-danger">
                             <i class="bi bi-trash"></i> Delete
                         </button>
@@ -75,6 +76,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Leave a Comment</h5>
                         <form method="POST" action="/comments/store">
+                            <?= \App\Helpers\CsrfHelper::field() ?>
                             <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                             <div class="mb-3">
                                 <textarea class="form-control" name="content" rows="3" 
@@ -116,6 +118,7 @@
                                     <?php if ($getCurrentUserId() == $comment['user_id'] || $isAdmin): ?>
                                     <form method="POST" action="/comments/<?= $comment['id'] ?>/delete" class="d-inline"
                                           onsubmit="return confirm('Delete this comment?')">
+                                        <?= \App\Helpers\CsrfHelper::field() ?>
                                         <button type="submit" class="btn btn-outline-danger btn-sm">
                                             <i class="bi bi-trash"></i> Delete
                                         </button>
@@ -153,6 +156,7 @@
                                 </button>
                                 <div id="reply-form-<?= $comment['id'] ?>" style="display: none;" class="mt-2">
                                     <form method="POST" action="/comments/store">
+                                        <?= \App\Helpers\CsrfHelper::field() ?>
                                         <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                                         <input type="hidden" name="parent_id" value="<?= $comment['id'] ?>">
                                         <div class="input-group">

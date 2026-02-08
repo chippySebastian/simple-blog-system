@@ -6,7 +6,7 @@
         <div class="col-md-4 col-lg-3 mb-4">
             <div class="card text-center shadow-sm">
                 <div class="card-body">
-                    <img src="<?= htmlspecialchars($user['avatar']) ?>" 
+                    <img src="<?= htmlspecialchars($user['avatar'] ?? 'https://ui-avatars.com/api/?name=' . urlencode($user['full_name'])) ?>" 
                          class="rounded-circle mb-2" width="80" height="80"
                          alt="<?= htmlspecialchars($user['full_name']) ?>">
                     <h5 class="card-title">

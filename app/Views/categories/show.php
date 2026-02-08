@@ -2,7 +2,7 @@
     <h1 class="mb-4">
         <i class="bi bi-tag"></i> <?= htmlspecialchars($category['name']) ?>
     </h1>
-    <p class="lead text-muted"><?= htmlspecialchars($category['description']) ?></p>
+    <p class="lead text-muted"><?= htmlspecialchars($category['description'] ?? '') ?></p>
     <hr>
 
     <div class="row">

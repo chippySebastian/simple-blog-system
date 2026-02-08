@@ -3,7 +3,7 @@
         <div class="col-lg-8 mx-auto">
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
-                    <img src="<?= htmlspecialchars($user['avatar']) ?>" 
+                    <img src="<?= htmlspecialchars($user['avatar'] ?? 'https://ui-avatars.com/api/?name=' . urlencode($user['full_name'])) ?>" 
                          class="rounded-circle mb-3" width="120" height="120"
                          alt="<?= htmlspecialchars($user['full_name']) ?>">
                     <h2><?= htmlspecialchars($user['full_name']) ?></h2>

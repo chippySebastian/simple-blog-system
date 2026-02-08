@@ -172,7 +172,7 @@
                             <tbody>
                                 <?php foreach ($recentComments as $comment): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($comment['user']['name']) ?></td>
+                                    <td><?= htmlspecialchars($comment['user']['full_name'] ?? 'Unknown') ?></td>
                                     <td>
                                         <a href="/posts/<?= $comment['post']['id'] ?>">
                                             <?= htmlspecialchars(substr($comment['post']['title'], 0, 30)) ?>

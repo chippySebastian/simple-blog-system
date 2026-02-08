@@ -8,7 +8,7 @@
                     <form method="POST" action="/profile/update">
                         <?= \App\Helpers\CsrfHelper::field() ?>
                         <div class="mb-3 text-center">
-                            <img src="<?= htmlspecialchars($user['avatar']) ?>" 
+                            <img src="<?= htmlspecialchars($user['avatar'] ?? 'https://ui-avatars.com/api/?name=' . urlencode($user['full_name'])) ?>" 
                                  class="rounded-circle mb-2" width="100" height="100"
                                  alt="<?= htmlspecialchars($user['full_name']) ?>">
                         </div>
@@ -33,7 +33,7 @@
                         <div class="mb-3">
                             <label for="avatar" class="form-label">Avatar URL</label>
                             <input type="url" class="form-control" id="avatar" name="avatar" 
-                                   value="<?= htmlspecialchars($user['avatar']) ?>">
+                                   value="<?= htmlspecialchars($user['avatar'] ?? '') ?>">
                         </div>
 
                         <div class="d-flex gap-2">

@@ -30,7 +30,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title"><?= htmlspecialchars($category['name']) ?></h5>
                                 <p class="card-text text-muted small">
-                                    <?= htmlspecialchars($category['description']) ?>
+                                    <?= htmlspecialchars($category['description'] ?? '') ?>
                                 </p>
                             </div>
                         </div>

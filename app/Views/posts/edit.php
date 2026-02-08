@@ -21,7 +21,7 @@
 
                         <div class="mb-3">
                             <label for="excerpt" class="form-label">Excerpt</label>
-                            <textarea class="form-control" id="excerpt" name="excerpt" rows="3"><?= htmlspecialchars($post['excerpt']) ?></textarea>
+                            <textarea class="form-control" id="excerpt" name="excerpt" rows="3"><?= htmlspecialchars($post['excerpt'] ?? '') ?></textarea>
                         </div>
 
                         <div class="mb-3">

@@ -12,7 +12,7 @@
                         </a>
                     </h4>
                     <p class="card-text text-muted">
-                        <?= htmlspecialchars($category['description']) ?>
+                        <?= htmlspecialchars($category['description'] ?? '') ?>
                     </p>
                     <span class="badge bg-primary"><?= $category['post_count'] ?> posts</span>
                 </div>

@@ -11,6 +11,10 @@ define('BASE_PATH', __DIR__);
 
 require_once BASE_PATH . '/vendor/autoload.php';
 
+// Load environment variables
+$dotenv = Dotenv\Dotenv::createImmutable(BASE_PATH);
+$dotenv->load();
+
 // Load configuration
 $dbConfig = require BASE_PATH . '/config/Database.php';
 

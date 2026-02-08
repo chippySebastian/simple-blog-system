@@ -30,7 +30,7 @@
                     <div class="alert alert-info">
                         <strong>Test Credentials:</strong><br>
                         Admin: admin@blog.com / admin123<br>
-                        User: john@example.com / password
+                        User: john@example.com / password123
                     </div>
                 </div>
             </div>

@@ -46,7 +46,6 @@ class ImageController extends BaseController
         // Get mime type
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $imagePath);
-        finfo_close($finfo);
         
         // Set headers
         header('Content-Type: ' . $mimeType);

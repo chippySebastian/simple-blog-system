@@ -7,7 +7,8 @@ A full-featured blog system built with PHP, following MVC architecture and OOP p
 - 🎯 **Modern MVC Architecture** - Clean separation of concerns
 - 🗄️ **PostgreSQL Database** - Robust and scalable database backend
 - 🔄 **Custom Migration System** - Version control for your database schema
-- 🔐 **Secure Authentication** - Password hashing, CSRF protection, prepared statements
+- 🔐 **Enhanced Security** - CSRF protection, security headers, session hardening, password hashing
+- 🖼️ **Image Upload System** - Automatic thumbnail generation, validation, secure storage
 - 👥 **User Management** - Registration, profiles, roles (user/admin)
 - 📝 **Full Blog Features** - Posts, categories, comments, search
 - 🎨 **Admin Dashboard** - Complete admin panel with statistics
@@ -25,7 +26,10 @@ A full-featured blog system built with PHP, following MVC architecture and OOP p
 - Create, edit, and delete posts
 - Rich text editor support
 - Draft saving functionality
-- Featured image uploads
+- Featured image uploads with automatic thumbnail generation
+- Multiple image sizes (original, medium, thumbnail)
+- Image validation (type, size, MIME checking)
+- Secure image storage outside web root
 
 ### Categories & Tags
 - Create and manage categories
@@ -49,24 +53,37 @@ A full-featured blog system built with PHP, following MVC architecture and OOP p
 - Content management
 - Comment moderation
 
+### Security Features
+- **CSRF Protection** - Token-based validation on all forms and POST requests
+- **Security Headers** - Protection against XSS, clickjacking, and MIME-sniffing
+- **Session Security** - HTTPOnly cookies, SameSite attribute, session timeout, fingerprinting
+- **Password Security** - Bcrypt hashing with strong passwords
+- **SQL Injection Prevention** - Prepared statements with PDO
+- **Input Sanitization** - HTML special characters escaping
+- **Secure File Storage** - Images stored outside web root with validation
+- **Environment Variables** - Sensitive credentials in .env file
+
 ## 📦 Tech Stack
 
-- **Language:** PHP 7.4+
+- **Language:** PHP 7.4+ (PHP 8.5 compatible)
 - **Database:** PostgreSQL 12+
 - **Architecture:** MVC (Model-View-Controller)
 - **Design:** OOP (Object-Oriented Programming)
 - **Authentication:** Session-based with password hashing
 - **Migrations:** Custom migration system
+- **Image Processing:** Intervention Image v3 (GD driver)
+- **Environment:** dotenv for configuration
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- PHP 7.4 or higher with required extensions:
+- PHP 7.4 or higher (tested up to PHP 8.5) with required extensions:
   - pdo
   - pdo_pgsql
   - pgsql
   - mbstring
   - json
+  - gd (for image processing)
 - PostgreSQL 12 or higher
 - Composer (for dependency management)
 
@@ -334,6 +351,11 @@ For more issues, run: `php check.php`
 - [x] Middleware (Auth, Admin)
 - [x] Helper functions
 - [x] Service layer architecture
+- [x] Image upload system with thumbnails
+- [x] CSRF protection across all forms
+- [x] Security headers (XSS, clickjacking, MIME-sniffing)
+- [x] Session hardening (httponly, samesite, timeout, fingerprinting)
+- [x] Environment-based configuration (.env)
 
 ### 🚧 Roadmap
 
@@ -341,13 +363,14 @@ For more issues, run: `php check.php`
 - [ ] Comprehensive testing suite
 - [ ] Email verification system
 - [ ] Password reset via email
-- [ ] Image optimization for uploads
 - [ ] Post tags implementation
 - [ ] Social media sharing
 - [ ] RSS feed
 - [ ] SEO optimization
 - [ ] Rate limiting
 - [ ] Caching layer
+- [ ] WebP image format support
+- [ ] Two-factor authentication
 
 ## 📝 License
 
@@ -355,8 +378,8 @@ MIT License - feel free to use this project as you wish.
 
 ## 👤 Author
 
-**Ajay**
-- Email: ajay@simpleblog.com
+**Chippy Sebastian**
+- GitHub: [@chippy-sebastian](https://github.com/chippy-sebastian)
 
 ## 🙏 Acknowledgments
 

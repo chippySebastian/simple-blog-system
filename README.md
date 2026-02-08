@@ -247,15 +247,10 @@ The migration system creates the following tables:
 
 ## �📖 Documentation
 
-- **[database/migrations/README.md](database/migrations/README.md)** - Migration system documentation
-- **Project Configuration** - See `.env.example` for all available settings
-- **System Health Check** - Run `php check.php` to verify setup
-- **Status Check** - Run `php status.php` for application status
-
-### Quick References
-- **Database Setup**: Run `composer db:setup` for fresh installation
-- **Migration Commands**: See [Database Migrations](#️-database-migrations) section
-- **Default Credentials**: admin/admin123 (created via seeding)
+- **Migration System** - See [database/migrations/README.md](database/migrations/README.md)
+- **Configuration** - Check `.env.example` for available settings
+- **Database Setup** - Run `composer db:setup` for fresh installation
+- **Default Credentials** - admin/admin123 (created via seeding)
 
 ## 🔧 Available Commands
 
@@ -333,44 +328,7 @@ composer update            # Update dependencies
 
 For more issues, run: `php check.php`
 
-## 📋 Development Status
 
-### ✅ Completed Features
-
-- [x] Database migrations for all tables
-- [x] PostgreSQL database integration
-- [x] Migration system with versioning
-- [x] Database seeding
-- [x] User model and authentication
-- [x] Post CRUD operations
-- [x] Category management
-- [x] Comments system
-- [x] Search functionality
-- [x] Admin dashboard
-- [x] Frontend views and layouts
-- [x] Middleware (Auth, Admin)
-- [x] Helper functions
-- [x] Service layer architecture
-- [x] Image upload system with thumbnails
-- [x] CSRF protection across all forms
-- [x] Security headers (XSS, clickjacking, MIME-sniffing)
-- [x] Session hardening (httponly, samesite, timeout, fingerprinting)
-- [x] Environment-based configuration (.env)
-
-### 🚧 Roadmap
-
-- [ ] API endpoints (RESTful)
-- [ ] Comprehensive testing suite
-- [ ] Email verification system
-- [ ] Password reset via email
-- [ ] Post tags implementation
-- [ ] Social media sharing
-- [ ] RSS feed
-- [ ] SEO optimization
-- [ ] Rate limiting
-- [ ] Caching layer
-- [ ] WebP image format support
-- [ ] Two-factor authentication
 
 ## 📝 License
 
@@ -379,16 +337,6 @@ MIT License - feel free to use this project as you wish.
 ## 👤 Author
 
 **Chippy Sebastian**
-- GitHub: [@chippy-sebastian](https://github.com/chippy-sebastian)
-
-## 🙏 Acknowledgments
-
-Built with modern PHP best practices:
-- PSR-4 autoloading
-- PSR-12 coding standards
-- Dependency injection
-- Service layer pattern
-- Repository pattern ready
 
 ---
 

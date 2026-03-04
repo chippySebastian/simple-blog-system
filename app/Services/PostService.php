@@ -48,6 +48,11 @@ class PostService
         return $this->postModel->getByUser($userId, $status, $limit);
     }
     
+    public function getByAuthor($userId, $status = null, $limit = null)
+    {
+        return $this->getByUser($userId, $status, $limit);
+    }
+    
     public function getByStatus($status)
     {
         return $this->postModel->getByStatus($status);

@@ -98,4 +98,79 @@ class User extends BaseModel
     {
         return $this->findBy('reset_token', $token);
     }
+
+    /**
+     * Find user by valid reset token (not expired)
+     */
+    public function findByValidResetToken($token)
+    {
+        $sql = "SELECT * FROM users 
+                WHERE reset_token = ? 
+                AND reset_token_expires IS NOT NULL
+                AND reset_token_expires > (CURRENT_TIMESTAMP AT TIME ZONE 'UTC')
+                LIMIT 1";
+
+        $stmt = $this->query($sql, [$token]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+    }
+
+    /**
+     * Set password reset token and expiry
+     */
+    public function setResetToken($userId, $token, $expiresAt)
+    {
+        return $this->update($userId, [
+            'reset_token' => $token,
+            'reset_token_expires' => $expiresAt
+        ]);
+    }
+
+    /**
+     * Clear password reset token fields
+     */
+    public function clearResetToken($userId)
+    {
+        return $this->update($userId, [
+            'reset_token' => null,
+            'reset_token_expires' => null
+        ]);
+    }
+
+    /**
+     * Set email verification token and expiry
+     */
+    public function setEmailVerificationToken($userId, $token, $expiresAt)
+    {
+        return $this->update($userId, [
+            'email_verification_token' => $token,
+            'email_verification_expires' => $expiresAt
+        ]);
+    }
+
+    /**
+     * Find user by valid email verification token
+     */
+    public function findByValidEmailVerificationToken($token)
+    {
+        $sql = "SELECT * FROM users
+                WHERE email_verification_token = ?
+                AND email_verification_expires IS NOT NULL
+                AND email_verification_expires > (CURRENT_TIMESTAMP AT TIME ZONE 'UTC')
+                LIMIT 1";
+
+        $stmt = $this->query($sql, [$token]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+    }
+
+    /**
+     * Mark user email as verified and clear verification token
+     */
+    public function markEmailVerified($userId)
+    {
+        return $this->update($userId, [
+            'email_verified' => true,
+            'email_verification_token' => null,
+            'email_verification_expires' => null
+        ]);
+    }
 }

@@ -93,6 +93,12 @@ $router->post('/reset-password', function () {
     $controller->resetPassword();
 });
 
+// Email verification
+$router->get('/verify-email', function () {
+    $controller = new AuthController();
+    $controller->verifyEmail();
+});
+
 // ============================================
 // USER PROFILE ROUTES
 // ============================================

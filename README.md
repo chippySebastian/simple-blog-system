@@ -113,6 +113,14 @@ A full-featured blog system built with PHP, following MVC architecture and OOP p
      DB_USER=postgres
      DB_PASSWORD=your_password
      ```
+   - Configure Mailtrap for password reset emails:
+     ```env
+     MAILTRAP_API_KEY=your_mailtrap_api_key
+     MAILTRAP_USE_SANDBOX=true
+     MAILTRAP_INBOX_ID=your_mailtrap_inbox_id
+     MAIL_FROM=noreply@simpleblog.com
+     MAIL_FROM_NAME="Simple Blog System"
+     ```
 
 4. **Run Migrations**
    ```bash

@@ -109,7 +109,7 @@ abstract class BaseModel
                 VALUES (" . implode(', ', $placeholders) . ") RETURNING {$this->primaryKey}";
         
         $stmt = $this->db->prepare($sql);
-        $stmt->execute(array_values($data));
+        $stmt->execute($this->normalizeBindings(array_values($data)));
         
         return $stmt->fetchColumn();
     }
@@ -132,7 +132,7 @@ abstract class BaseModel
         $sql = "UPDATE {$this->table} SET " . implode(', ', $setParts) . 
                " WHERE {$this->primaryKey} = ?";
         
-        $values = array_values($data);
+        $values = $this->normalizeBindings(array_values($data));
         $values[] = $id;
         
         $stmt = $this->db->prepare($sql);
@@ -176,7 +176,22 @@ abstract class BaseModel
     protected function query($sql, $params = [])
     {
         $stmt = $this->db->prepare($sql);
-        $stmt->execute($params);
+        $stmt->execute($this->normalizeBindings($params));
         return $stmt;
+    }
+
+    /**
+     * Normalize values for PDO/PostgreSQL bindings.
+     * PostgreSQL rejects empty string for boolean columns.
+     */
+    private function normalizeBindings(array $values): array
+    {
+        foreach ($values as $index => $value) {
+            if (is_bool($value)) {
+                $values[$index] = $value ? 'true' : 'false';
+            }
+        }
+
+        return $values;
     }
 }

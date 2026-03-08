@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\UserService;
+use App\Services\MailService;
 use App\Helpers\AuthHelper;
 
 /**
@@ -13,10 +14,12 @@ use App\Helpers\AuthHelper;
 class AuthController extends BaseController
 {
     private $userService;
+    private $mailService;
 
     public function __construct()
     {
         $this->userService = new UserService();
+        $this->mailService = new MailService();
     }
 
     /**
@@ -134,6 +137,9 @@ class AuthController extends BaseController
             $counter++;
         }
 
+        $verificationToken = bin2hex(random_bytes(32));
+        $verificationExpiresAt = gmdate('Y-m-d H:i:s', time() + 86400); // 24 hours (UTC)
+
         // Create user (UserService will hash the password)
         $userId = $this->userService->create([
             'username' => $username,
@@ -141,16 +147,22 @@ class AuthController extends BaseController
             'email' => $email,
             'password' => $password,  // Pass plain password - service will hash it
             'role' => 'user',
-            'email_verified' => true, // Auto-verify for demo (in production, send email)
+            'email_verified' => false,
+            'email_verification_token' => $verificationToken,
+            'email_verification_expires' => $verificationExpiresAt,
             'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&background=random'
         ]);
 
-        // Fetch the created user for login
-        $user = $this->userService->find($userId);
+        $verificationUrl = $this->getAppUrl() . '/verify-email?token=' . urlencode($verificationToken);
+        $emailSent = $this->mailService->sendEmailVerificationEmail($email, $name, $verificationUrl);
 
-        AuthHelper::login($user);
-        $this->setFlash('success', 'Registration successful! Welcome, ' . $name . '!');
-        $this->redirect('/');
+        if ($emailSent) {
+            $this->setFlash('success', 'Registration successful. Please check your email to verify your account before login.');
+        } else {
+            $this->setFlash('error', 'Registration completed, but verification email could not be sent. Please contact support.');
+        }
+
+        $this->redirect('/login');
     }
 
     /**
@@ -195,9 +207,21 @@ class AuthController extends BaseController
         $user = $this->userService->findByEmail($email);
 
         if ($user) {
-            // TODO: Implement email sending functionality
-            // Generate reset token, store in database, send email with reset link
-            $this->setFlash('success', 'Password reset instructions sent to your email');
+            $token = bin2hex(random_bytes(32));
+            $expiresAt = gmdate('Y-m-d H:i:s', time() + 3600); // 1 hour (UTC)
+
+            $this->userService->setResetToken($user['id'], $token, $expiresAt);
+
+            $resetUrl = $this->getAppUrl() . '/reset-password?token=' . urlencode($token);
+            $toName = $user['full_name'] ?: $user['username'];
+
+            $emailSent = $this->mailService->sendPasswordResetEmail($user['email'], $toName, $resetUrl);
+
+            if ($emailSent) {
+                $this->setFlash('success', 'Password reset instructions sent to your email');
+            } else {
+                $this->setFlash('error', 'Unable to send reset email right now. Please try again later.');
+            }
         } else {
             // Don't reveal if email exists or not (security best practice)
             $this->setFlash('success', 'If that email exists, password reset instructions have been sent');
@@ -234,6 +258,11 @@ class AuthController extends BaseController
         $password = $_POST['password'] ?? '';
         $confirmPassword = $_POST['confirm_password'] ?? '';
 
+        if (empty($token)) {
+            $this->setFlash('error', 'Invalid or missing reset token');
+            $this->redirect('/forgot-password');
+        }
+
         if (empty($password) || strlen($password) < 6) {
             $this->setFlash('error', 'Password must be at least 6 characters');
             $this->redirect('/reset-password?token=' . $token);
@@ -244,9 +273,52 @@ class AuthController extends BaseController
             $this->redirect('/reset-password?token=' . $token);
         }
 
-        // TODO: Implement token verification and password update
-        // Verify reset token, check expiration, update user password in database
+        $user = $this->userService->findByValidResetToken($token);
+
+        if (!$user) {
+            $this->setFlash('error', 'Reset token is invalid or has expired');
+            $this->redirect('/forgot-password');
+        }
+
+        $this->userService->updatePassword($user['id'], $password);
+        $this->userService->clearResetToken($user['id']);
+
         $this->setFlash('success', 'Password reset successful! Please login with your new password');
         $this->redirect('/login');
+    }
+
+    /**
+     * Verify email by token.
+     */
+    public function verifyEmail()
+    {
+        $token = $_GET['token'] ?? '';
+
+        if (empty($token)) {
+            $this->setFlash('error', 'Invalid verification token');
+            $this->redirect('/login');
+        }
+
+        $user = $this->userService->findByValidEmailVerificationToken($token);
+
+        if (!$user) {
+            $this->setFlash('error', 'Verification token is invalid or has expired');
+            $this->redirect('/login');
+        }
+
+        $this->userService->markEmailVerified($user['id']);
+        $this->setFlash('success', 'Email verified successfully. You can now login.');
+        $this->redirect('/login');
+    }
+
+    private function getAppUrl()
+    {
+        $url = trim($_ENV['APP_URL'] ?? (getenv('APP_URL') ?: 'http://localhost:8000'));
+
+        if (!preg_match('#^https?://#i', $url)) {
+            $url = 'http://' . ltrim($url, '/');
+        }
+
+        return rtrim($url, '/');
     }
 }

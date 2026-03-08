@@ -98,4 +98,34 @@ class UserService
     {
         return $this->userModel->count();
     }
+
+    public function setResetToken($userId, $token, $expiresAt)
+    {
+        return $this->userModel->setResetToken($userId, $token, $expiresAt);
+    }
+
+    public function clearResetToken($userId)
+    {
+        return $this->userModel->clearResetToken($userId);
+    }
+
+    public function findByValidResetToken($token)
+    {
+        return $this->userModel->findByValidResetToken($token);
+    }
+
+    public function setEmailVerificationToken($userId, $token, $expiresAt)
+    {
+        return $this->userModel->setEmailVerificationToken($userId, $token, $expiresAt);
+    }
+
+    public function findByValidEmailVerificationToken($token)
+    {
+        return $this->userModel->findByValidEmailVerificationToken($token);
+    }
+
+    public function markEmailVerified($userId)
+    {
+        return $this->userModel->markEmailVerified($userId);
+    }
 }

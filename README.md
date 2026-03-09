@@ -1,347 +1,244 @@
 # Simple Blog System
 
-A full-featured blog system built with PHP, following MVC architecture and OOP principles. Includes custom migration system, PostgreSQL database, and comprehensive admin panel.
+Simple Blog System is a PHP application for publishing and managing blog content. It follows an MVC structure, uses PostgreSQL, and includes a custom migration workflow for database changes.
 
-## ✨ Highlights
+## What this project includes
 
-- 🎯 **Modern MVC Architecture** - Clean separation of concerns
-- 🗄️ **PostgreSQL Database** - Robust and scalable database backend
-- 🔄 **Custom Migration System** - Version control for your database schema
-- 🔐 **Enhanced Security** - CSRF protection, security headers, session hardening, password hashing
-- 🖼️ **Image Upload System** - Automatic thumbnail generation, validation, secure storage
-- 👥 **User Management** - Registration, profiles, roles (user/admin)
-- 📝 **Full Blog Features** - Posts, categories, comments, search
-- 🎨 **Admin Dashboard** - Complete admin panel with statistics
-- 🧪 **Testing Ready** - PHPUnit integration with test structure
+- User registration, login, profile management, and role support (user/admin)
+- Full post workflow: create, edit, delete, publish, and draft handling
+- Categories and tags for content organization
+- Comment system with moderation and reply support
+- Search by title, content, and author
+- Admin dashboard for users, posts, and moderation
+- Image upload support with validation and thumbnail generation
+- Security protections such as CSRF tokens, prepared statements, and secure sessions
 
-## 🎯 Features
+## Tech stack
 
-### User Management
-- User registration with email verification
-- Login and logout functionality
-- Password reset feature
-- User profile management
+- PHP 7.4+ (compatible with newer versions)
+- PostgreSQL 12+
+- MVC + OOP architecture
+- Session-based authentication
+- Custom migration system
+- Intervention Image v3 (GD)
+- dotenv for environment configuration
 
-### Blog Post Management
-- Create, edit, and delete posts
-- Rich text editor support
-- Draft saving functionality
-- Featured image uploads with automatic thumbnail generation
-- Multiple image sizes (original, medium, thumbnail)
-- Image validation (type, size, MIME checking)
-- Secure image storage outside web root
+## Prerequisites
 
-### Categories & Tags
-- Create and manage categories
-- Assign multiple categories to posts
-- Filter posts by category
-
-### Comments System
-- Comments on posts
-- Comment moderation
-- Reply to comments
-- Edit or delete own comments
-
-### Search & Discovery
-- Search posts by title, content, or author
-- Search results with pagination
-- Highlight search terms
-
-### Admin Panel
-- Dashboard with statistics
-- User management
-- Content management
-- Comment moderation
-
-### Security Features
-- **CSRF Protection** - Token-based validation on all forms and POST requests
-- **Security Headers** - Protection against XSS, clickjacking, and MIME-sniffing
-- **Session Security** - HTTPOnly cookies, SameSite attribute, session timeout, fingerprinting
-- **Password Security** - Bcrypt hashing with strong passwords
-- **SQL Injection Prevention** - Prepared statements with PDO
-- **Input Sanitization** - HTML special characters escaping
-- **Secure File Storage** - Images stored outside web root with validation
-- **Environment Variables** - Sensitive credentials in .env file
-
-## 📦 Tech Stack
-
-- **Language:** PHP 7.4+ (PHP 8.5 compatible)
-- **Database:** PostgreSQL 12+
-- **Architecture:** MVC (Model-View-Controller)
-- **Design:** OOP (Object-Oriented Programming)
-- **Authentication:** Session-based with password hashing
-- **Migrations:** Custom migration system
-- **Image Processing:** Intervention Image v3 (GD driver)
-- **Environment:** dotenv for configuration
-
-## 🚀 Quick Start
-
-### Prerequisites
-- PHP 7.4 or higher (tested up to PHP 8.5) with required extensions:
-  - pdo
-  - pdo_pgsql
-  - pgsql
-  - mbstring
-  - json
-  - gd (for image processing)
+- PHP 7.4 or higher with:
+  - `pdo`
+  - `pdo_pgsql`
+  - `pgsql`
+  - `mbstring`
+  - `json`
+  - `gd`
 - PostgreSQL 12 or higher
-- Composer (for dependency management)
+- Composer
 
-### Installation
+## Installation
 
-1. **Install Dependencies**
-   ```bash
-   composer install
-   ```
+1. Install dependencies:
 
-2. **Create Database**
-   ```bash
-   # Using psql command line
-   psql -U postgres
-   CREATE DATABASE simple_blog_db;
-   \q
-   ```
-
-3. **Configure Environment**
-   - Copy `.env.example` to `.env`
-   - Update database credentials in `.env`:
-     ```env
-     DB_DRIVER=pgsql
-     DB_HOST=localhost
-     DB_PORT=5432
-     DB_NAME=simple_blog_db
-     DB_USER=postgres
-     DB_PASSWORD=your_password
-     ```
-   - Configure Mailtrap for password reset emails:
-     ```env
-     MAILTRAP_API_KEY=your_mailtrap_api_key
-     MAILTRAP_USE_SANDBOX=true
-     MAILTRAP_INBOX_ID=your_mailtrap_inbox_id
-     MAIL_FROM=noreply@simpleblog.com
-     MAIL_FROM_NAME="Simple Blog System"
-     ```
-
-4. **Run Migrations**
-   ```bash
-   composer migrate
-   # or
-   php migrate.php up
-   ```
-
-5. **Seed Database (Optional)**
-   ```bash
-   composer db:seed
-   ```
-   This creates:
-   - Admin user: `admin` / `admin123`
-   - Sample user: `john_doe` / `password123`
-   - Sample categories
-
-6. **Start Development Server**
-   ```bash
-   composer serve
-   ```
-
-7. **Access Application**
-   - Open: http://localhost:8000
-   - Login with admin credentials: `admin` / `admin123`
-
-## 📁 Project Structure
-
-```
-simple-blog-system/
-├── public/              # Web root (entry points)
-├── app/                 # Application code
-│   ├── Core/           # Core classes (Database, Router, App, Migration)
-│   ├── Controllers/    # Request handlers
-│   ├── Models/         # Data models
-│   ├── Services/       # Business logic
-│   ├── Validators/     # Form validation
-│   ├── Middleware/     # Request middleware
-│   ├── Helpers/        # Utility helpers
-│   └── Views/          # Template files
-├── routes/             # Route definitions
-├── config/             # Configuration files
-├── database/           # Migrations and seeds
-│   └── migrations/     # Database migration files
-├── storage/            # Uploads, cache, logs
-├── tests/              # Test files
-├── migrate.php         # Migration runner
-├── seed.php            # Database seeder
-└── docs/              # Documentation
-```
-
-## 🗄️ Database Migrations
-
-The project uses a custom migration system for database version control:
-
-### Migration Features
-- **Version Control**: Track and manage database schema changes
-- **Rollback Support**: Undo migrations in batches
-- **Fresh Migrations**: Drop all tables and rebuild from scratch
-- **Automatic Tracking**: Migrations table tracks execution history
-
-### Migration Files
-All migrations are located in `database/migrations/`:
-1. Create users table
-2. Create categories table
-3. Create posts table
-4. Create comments table
-5. Create tags table
-6. Create post_tags pivot table
-7. Add database indexes
-
-### Usage Examples
 ```bash
-# Check which migrations have run
-composer migrate:status
-
-# Run all pending migrations
-composer migrate
-
-# Rollback the last batch
-composer migrate:rollback
-
-# Fresh start (WARNING: drops all data!)
-composer migrate:fresh
-
-# Setup complete database with sample data
-composer db:setup
+composer install
 ```
 
-For detailed migration documentation, see [database/migrations/README.md](database/migrations/README.md).
+2. Create the database:
 
-## �️ Database Schema
+```bash
+psql -U postgres
+CREATE DATABASE simple_blog_db;
+\q
+```
 
-The migration system creates the following tables:
+3. Configure environment variables:
 
-### Tables Overview
+- Copy `.env.example` to `.env`
+- Update database values:
 
-**users** - User accounts and authentication
-- id, username, email, password, full_name, bio, avatar
-- role (user/admin), status, email verification
-- created_at, updated_at
+```env
+DB_DRIVER=pgsql
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=simple_blog_db
+DB_USER=postgres
+DB_PASSWORD=your_password
+```
 
-**categories** - Blog post categories
-- id, name, slug, description
-- created_at, updated_at
+- Configure Mailtrap for password reset emails:
 
-**posts** - Blog posts
-- id, user_id, category_id, title, slug, excerpt, content
-- featured_image, status (draft/published), views
-- published_at, created_at, updated_at
+```env
+MAILTRAP_API_KEY=your_mailtrap_api_key
+MAILTRAP_USE_SANDBOX=true
+MAILTRAP_INBOX_ID=your_mailtrap_inbox_id
+MAIL_FROM=noreply@simpleblog.com
+MAIL_FROM_NAME="Simple Blog System"
+```
 
-**comments** - Post comments and replies
-- id, post_id, user_id, parent_id (for replies)
-- content, status (approved/pending/rejected)
-- created_at, updated_at
+4. Run migrations:
 
-**tags** - Content tags
-- id, name, slug, created_at
+```bash
+composer migrate
+# or
+php migrate.php up
+```
 
-**post_tags** - Many-to-many relationship between posts and tags
-- post_id, tag_id
+5. (Optional) Seed sample data:
 
-**migrations** - Migration tracking (auto-created)
-- id, migration, batch, executed_at
+```bash
+composer db:seed
+```
 
-### Relationships
+This creates:
+
+- Admin user: `admin` / `admin123`
+- Sample user: `john_doe` / `password123`
+- Sample categories
+
+6. Start the development server:
+
+```bash
+composer serve
+```
+
+7. Open the application at `http://localhost:8000`.
+
+## Project structure
+
+```text
+simple-blog-system/
+|-- public/               # Web root and entry points
+|-- app/
+|   |-- Core/             # Core classes (Database, Router, App, Migration)
+|   |-- Controllers/      # Request handlers
+|   |-- Models/           # Data models
+|   |-- Services/         # Business logic
+|   |-- Validators/       # Validation rules
+|   |-- Middleware/       # Request middleware
+|   |-- Helpers/          # Utility helpers
+|   '-- Views/            # Templates
+|-- routes/               # Route definitions
+|-- config/               # App configuration
+|-- database/
+|   '-- migrations/       # Migration files
+|-- storage/              # Uploads, cache, logs
+|-- tests/                # Automated tests
+|-- migrate.php           # Migration runner
+|-- seed.php              # Database seeder
+'-- docs/                 # Project docs
+```
+
+## Migrations
+
+Migrations are stored in `database/migrations/` and tracked by a `migrations` table.
+
+Useful commands:
+
+```bash
+composer migrate            # Run pending migrations
+composer migrate:status     # Show migration state
+composer migrate:rollback   # Roll back last batch
+composer migrate:fresh      # Drop all tables and migrate again
+composer db:setup           # Fresh migration + seed
+```
+
+Manual alternatives:
+
+```bash
+php migrate.php up
+php migrate.php down
+php migrate.php fresh
+php migrate.php status
+php seed.php
+```
+
+Detailed guide: [database/migrations/README.md](database/migrations/README.md)
+
+## Database schema (summary)
+
+Core tables:
+
+- `users`: account and profile data
+- `categories`: post categories
+- `posts`: blog posts
+- `comments`: comments and threaded replies
+- `tags`: post tags
+- `post_tags`: post/tag pivot table
+- `migrations`: migration history
+
+Relationship summary:
+
 - Users have many posts and comments
 - Posts belong to users and categories
 - Posts have many comments and tags
 - Comments belong to posts and users
-- Comments can have child comments (replies)
+- Comments support parent-child replies
 
-## �📖 Documentation
-
-- **Migration System** - See [database/migrations/README.md](database/migrations/README.md)
-- **Configuration** - Check `.env.example` for available settings
-- **Database Setup** - Run `composer db:setup` for fresh installation
-- **Default Credentials** - admin/admin123 (created via seeding)
-
-## 🔧 Available Commands
+## Available commands
 
 ```bash
-# Server
-composer serve             # Start development server
+# Development server
+composer serve
 
-# Database Migrations
-composer migrate           # Run pending migrations
-composer migrate:status    # Check migration status
-composer migrate:rollback  # Rollback last batch
-composer migrate:fresh     # Drop all tables and re-run migrations
-composer db:seed           # Seed database with sample data
-composer db:setup          # Fresh migration + seed (complete setup)
+# Migrations and seed
+composer migrate
+composer migrate:status
+composer migrate:rollback
+composer migrate:fresh
+composer db:seed
+composer db:setup
 
-# Manual migration commands
-php migrate.php up         # Run migrations
-php migrate.php down       # Rollback migrations
-php migrate.php fresh      # Fresh migration
-php migrate.php status     # Migration status
-php seed.php               # Seed database
+# Tests
+composer test
+composer test:unit
+composer test:integration
 
-# Testing
-composer test              # Run all tests
-composer test:unit         # Run unit tests
-composer test:integration  # Run integration tests
-
-# Code Quality
-composer lint              # Check code style
-composer lint:fix          # Fix code style
-composer analyze           # Static analysis with PHPStan
-
-# Utilities
-composer install           # Install dependencies
-composer update            # Update dependencies
+# Quality tools
+composer lint
+composer lint:fix
+composer analyze
 ```
 
-## 🔐 Security Features
+## Security notes
 
-- ✓ Password hashing with bcrypt
-- ✓ CSRF token protection
-- ✓ Input sanitization (XSS prevention)
-- ✓ Prepared statements (SQL injection prevention)
-- ✓ Session-based authentication
-- ✓ Error logging
-- ✓ Secure HTTP headers ready
+- Password hashing with bcrypt
+- CSRF protection on form submissions
+- Input sanitization for XSS mitigation
+- Prepared statements for SQL injection prevention
+- Session hardening and secure cookie settings
+- Security headers support
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-**"composer: command not found"**
+If `composer` is not found:
+
 - Install Composer: https://getcomposer.org/download/
 
-**"Cannot connect to database"**
-- Ensure PostgreSQL is running
-- Create database: `CREATE DATABASE simple_blog_db;`
-- Update `.env` with correct credentials
-- Check if pdo_pgsql extension is enabled: `php -m | grep pgsql`
+If the app cannot connect to PostgreSQL:
 
-**"vendor/autoload.php not found"**
-- Run: `composer install`
+- Confirm PostgreSQL is running
+- Confirm the database exists: `CREATE DATABASE simple_blog_db;`
+- Check `.env` credentials
+- Verify extensions: `php -m | grep pgsql`
 
-**"Port 8000 already in use"**
-- Use: `php -S localhost:8001 -t public/`
+If `vendor/autoload.php` is missing:
 
-**"pdo_pgsql extension not found"**
-- Windows: Edit php.ini, uncomment `extension=pdo_pgsql` and `extension=pgsql`
-- Linux: Install `php-pgsql` package
-- Restart web server/PHP
+- Run `composer install`
 
-**"Database 'simple_blog_db' does not exist"**
-- Create database first, then run migrations
-- Or use `composer db:setup` to create everything
+If port `8000` is busy:
 
+- Run `php -S localhost:8001 -t public/`
 
+If `pdo_pgsql` is missing:
 
-## 📝 License
+- Windows: enable `extension=pdo_pgsql` and `extension=pgsql` in `php.ini`
+- Linux: install the `php-pgsql` package
+- Restart PHP/web server
 
-MIT License - feel free to use this project as you wish.
+## License
 
-## 👤 Author
+MIT
 
-**Chippy Sebastian**
+## Author
 
----
-
-**Ready to get started?** Follow the [Quick Start](#-quick-start) guide above or run `composer db:setup` for instant setup!
+Chippy Sebastian
